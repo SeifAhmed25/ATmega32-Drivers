@@ -1,0 +1,242 @@
+
+R503_ATmegaDriver.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000162  00000000  00000000  00000074  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00800060  00800060  000001d6  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000002  00800060  00800060  000001d6  2**0
+                  ALLOC
+  3 .comment      00000030  00000000  00000000  000001d6  2**0
+                  CONTENTS, READONLY
+  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000208  2**2
+                  CONTENTS, READONLY
+  5 .debug_aranges 00000090  00000000  00000000  00000244  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_info   00000960  00000000  00000000  000002d4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_abbrev 000006e9  00000000  00000000  00000c34  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_line   00000410  00000000  00000000  0000131d  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_frame  00000134  00000000  00000000  00001730  2**2
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_str    00000435  00000000  00000000  00001864  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_loc    0000020b  00000000  00000000  00001c99  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 12 .debug_ranges 00000060  00000000  00000000  00001ea4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 2a 00 	jmp	0x54	; 0x54 <__ctors_end>
+   4:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+   8:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+   c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  10:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  14:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  18:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  1c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  20:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  24:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  28:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  2c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  30:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  34:	0c 94 87 00 	jmp	0x10e	; 0x10e <__vector_13>
+  38:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  3c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  40:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  44:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  48:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  4c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+  50:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
+
+00000054 <__ctors_end>:
+  54:	11 24       	eor	r1, r1
+  56:	1f be       	out	0x3f, r1	; 63
+  58:	cf e5       	ldi	r28, 0x5F	; 95
+  5a:	d8 e0       	ldi	r29, 0x08	; 8
+  5c:	de bf       	out	0x3e, r29	; 62
+  5e:	cd bf       	out	0x3d, r28	; 61
+
+00000060 <__do_clear_bss>:
+  60:	20 e0       	ldi	r18, 0x00	; 0
+  62:	a0 e6       	ldi	r26, 0x60	; 96
+  64:	b0 e0       	ldi	r27, 0x00	; 0
+  66:	01 c0       	rjmp	.+2      	; 0x6a <.do_clear_bss_start>
+
+00000068 <.do_clear_bss_loop>:
+  68:	1d 92       	st	X+, r1
+
+0000006a <.do_clear_bss_start>:
+  6a:	a2 36       	cpi	r26, 0x62	; 98
+  6c:	b2 07       	cpc	r27, r18
+  6e:	e1 f7       	brne	.-8      	; 0x68 <.do_clear_bss_loop>
+  70:	0e 94 3e 00 	call	0x7c	; 0x7c <main>
+  74:	0c 94 af 00 	jmp	0x15e	; 0x15e <_exit>
+
+00000078 <__bad_interrupt>:
+  78:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+0000007c <main>:
+
+#include "UART_Interface.h"
+#include "FingerPrint_Interface.h"
+int main(void)
+{ 
+	UART_Init(); 
+  7c:	0e 94 77 00 	call	0xee	; 0xee <UART_Init>
+	FingerPS_handShake(); 
+  80:	0e 94 68 00 	call	0xd0	; 0xd0 <FingerPS_handShake>
+  84:	ff cf       	rjmp	.-2      	; 0x84 <main+0x8>
+
+00000086 <FingerP_send>:
+
+#include "FingerPrint_Interface.h"
+
+
+// Function to send a command to the fingerprint sensor
+void FingerP_send(u8 Package_ID,u16 length){
+  86:	1f 93       	push	r17
+  88:	cf 93       	push	r28
+  8a:	df 93       	push	r29
+  8c:	18 2f       	mov	r17, r24
+  8e:	c6 2f       	mov	r28, r22
+  90:	d7 2f       	mov	r29, r23
+
+	UART_sendByte(HEADER_HIGH_BYTE);
+  92:	8f ee       	ldi	r24, 0xEF	; 239
+  94:	0e 94 81 00 	call	0x102	; 0x102 <UART_sendByte>
+	UART_sendByte(HEADER_LOW_BYTE);
+  98:	81 e0       	ldi	r24, 0x01	; 1
+  9a:	0e 94 81 00 	call	0x102	; 0x102 <UART_sendByte>
+
+	UART_sendByte(ADDRESS_FOURTH_BYTE);
+  9e:	8f ef       	ldi	r24, 0xFF	; 255
+  a0:	0e 94 81 00 	call	0x102	; 0x102 <UART_sendByte>
+	UART_sendByte(ADDRESS_THIRD_BYTE);
+  a4:	8f ef       	ldi	r24, 0xFF	; 255
+  a6:	0e 94 81 00 	call	0x102	; 0x102 <UART_sendByte>
+	UART_sendByte(ADDRESS_SECOND_BYTE);
+  aa:	8f ef       	ldi	r24, 0xFF	; 255
+  ac:	0e 94 81 00 	call	0x102	; 0x102 <UART_sendByte>
+	UART_sendByte(ADDRESS_FIRST_BYTE);
+  b0:	8f ef       	ldi	r24, 0xFF	; 255
+  b2:	0e 94 81 00 	call	0x102	; 0x102 <UART_sendByte>
+
+	UART_sendByte(Package_ID);
+  b6:	81 2f       	mov	r24, r17
+  b8:	0e 94 81 00 	call	0x102	; 0x102 <UART_sendByte>
+/*SHIFT RIGHT BYTE*/
+	UART_sendByte(length>>ONE_BYTE_SHIFT);
+  bc:	8d 2f       	mov	r24, r29
+  be:	0e 94 81 00 	call	0x102	; 0x102 <UART_sendByte>
+	UART_sendByte(length>>NO_BYTE_SHIFT);
+  c2:	8c 2f       	mov	r24, r28
+  c4:	0e 94 81 00 	call	0x102	; 0x102 <UART_sendByte>
+}
+  c8:	df 91       	pop	r29
+  ca:	cf 91       	pop	r28
+  cc:	1f 91       	pop	r17
+  ce:	08 95       	ret
+
+000000d0 <FingerPS_handShake>:
+
+void FingerPS_handShake(void){
+
+	FingerP_send(PCK_ID_COMMAND_PACK,LENGTH_3BYTE);
+  d0:	63 e0       	ldi	r22, 0x03	; 3
+  d2:	70 e0       	ldi	r23, 0x00	; 0
+  d4:	81 e0       	ldi	r24, 0x01	; 1
+  d6:	0e 94 43 00 	call	0x86	; 0x86 <FingerP_send>
+	UART_sendByte(HAND_SHAKE);
+  da:	80 e4       	ldi	r24, 0x40	; 64
+  dc:	0e 94 81 00 	call	0x102	; 0x102 <UART_sendByte>
+	UART_sendByte((PCK_ID_COMMAND_PACK+LENGTH_3BYTE+HAND_SHAKE)>>ONE_BYTE_SHIFT);
+  e0:	80 e0       	ldi	r24, 0x00	; 0
+  e2:	0e 94 81 00 	call	0x102	; 0x102 <UART_sendByte>
+	UART_sendByte((PCK_ID_COMMAND_PACK+LENGTH_3BYTE+HAND_SHAKE)>>NO_BYTE_SHIFT);
+  e6:	84 e4       	ldi	r24, 0x44	; 68
+  e8:	0e 94 81 00 	call	0x102	; 0x102 <UART_sendByte>
+  ec:	08 95       	ret
+
+000000ee <UART_Init>:
+		/*WAIT UNTIL THE RECIEVER FLAG IS ONE*/
+	}
+	return (UDR);
+}
+void UART_receiveByteAsynchCallBack(void(*CpyPtr)(u8)){
+	ptr_func = CpyPtr; 
+  ee:	83 e3       	ldi	r24, 0x33	; 51
+  f0:	89 b9       	out	0x09, r24	; 9
+  f2:	88 e9       	ldi	r24, 0x98	; 152
+  f4:	8a b9       	out	0x0a, r24	; 10
+  f6:	80 b5       	in	r24, 0x20	; 32
+  f8:	80 68       	ori	r24, 0x80	; 128
+  fa:	80 bd       	out	0x20, r24	; 32
+  fc:	86 e8       	ldi	r24, 0x86	; 134
+  fe:	80 bd       	out	0x20, r24	; 32
+ 100:	08 95       	ret
+
+00000102 <UART_sendByte>:
+ 102:	5d 9b       	sbis	0x0b, 5	; 11
+ 104:	fe cf       	rjmp	.-4      	; 0x102 <UART_sendByte>
+ 106:	8c b9       	out	0x0c, r24	; 12
+ 108:	5e 9b       	sbis	0x0b, 6	; 11
+ 10a:	fe cf       	rjmp	.-4      	; 0x108 <UART_sendByte+0x6>
+ 10c:	08 95       	ret
+
+0000010e <__vector_13>:
+} 
+
+ISR(USART_RXC_vect){
+ 10e:	1f 92       	push	r1
+ 110:	0f 92       	push	r0
+ 112:	0f b6       	in	r0, 0x3f	; 63
+ 114:	0f 92       	push	r0
+ 116:	11 24       	eor	r1, r1
+ 118:	2f 93       	push	r18
+ 11a:	3f 93       	push	r19
+ 11c:	4f 93       	push	r20
+ 11e:	5f 93       	push	r21
+ 120:	6f 93       	push	r22
+ 122:	7f 93       	push	r23
+ 124:	8f 93       	push	r24
+ 126:	9f 93       	push	r25
+ 128:	af 93       	push	r26
+ 12a:	bf 93       	push	r27
+ 12c:	ef 93       	push	r30
+ 12e:	ff 93       	push	r31
+	ptr_func(UDR);
+ 130:	8c b1       	in	r24, 0x0c	; 12
+ 132:	e0 91 60 00 	lds	r30, 0x0060	; 0x800060 <_edata>
+ 136:	f0 91 61 00 	lds	r31, 0x0061	; 0x800061 <_edata+0x1>
+ 13a:	09 95       	icall
+}
+ 13c:	ff 91       	pop	r31
+ 13e:	ef 91       	pop	r30
+ 140:	bf 91       	pop	r27
+ 142:	af 91       	pop	r26
+ 144:	9f 91       	pop	r25
+ 146:	8f 91       	pop	r24
+ 148:	7f 91       	pop	r23
+ 14a:	6f 91       	pop	r22
+ 14c:	5f 91       	pop	r21
+ 14e:	4f 91       	pop	r20
+ 150:	3f 91       	pop	r19
+ 152:	2f 91       	pop	r18
+ 154:	0f 90       	pop	r0
+ 156:	0f be       	out	0x3f, r0	; 63
+ 158:	0f 90       	pop	r0
+ 15a:	1f 90       	pop	r1
+ 15c:	18 95       	reti
+
+0000015e <_exit>:
+ 15e:	f8 94       	cli
+
+00000160 <__stop_program>:
+ 160:	ff cf       	rjmp	.-2      	; 0x160 <__stop_program>
