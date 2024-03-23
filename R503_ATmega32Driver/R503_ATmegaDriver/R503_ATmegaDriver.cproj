@@ -102,6 +102,7 @@
       <Value>../HAL/R503_Driver</Value>
       <Value>../MCAL/UART</Value>
       <Value>../HAL/LCD</Value>
+      <Value>../MCAL/DIO</Value>
     </ListValues>
   </avrgcc.compiler.directories.IncludePaths>
   <avrgcc.compiler.optimization.level>Optimize debugging experience (-Og)</avrgcc.compiler.optimization.level>
@@ -130,6 +131,18 @@
     <Compile Include="BitMath.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="HAL\LCD\LCD_Config.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="HAL\LCD\LCD_Interface.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="HAL\LCD\LCD_Private.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="HAL\LCD\LCD_Prog.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="HAL\R503_Driver\FingerPrint.c">
       <SubType>compile</SubType>
     </Compile>
@@ -137,6 +150,18 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="HAL\R503_Driver\FingerPrint_Interface.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCAL\DIO\DIO_Config.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCAL\DIO\DIO_Interface.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCAL\DIO\DIO_Private.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="MCAL\DIO\DIO_Prog.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="MCAL\UART\UART.c">
@@ -156,10 +181,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="HAL\LCD" />
     <Folder Include="HAL\R503_Driver" />
     <Folder Include="MCAL" />
     <Folder Include="HAL" />
     <Folder Include="APP" />
+    <Folder Include="MCAL\DIO" />
     <Folder Include="MCAL\UART" />
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />

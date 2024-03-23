@@ -3,6 +3,9 @@
 #define HEADER_HIGH_BYTE 0XEF
 #define HEADER_LOW_BYTE 0X01
 
+#define false 0
+#define true 1
+
 #define ADDRESS_FIRST_BYTE 0XFF
 #define ADDRESS_SECOND_BYTE 0XFF
 #define ADDRESS_THIRD_BYTE 0XFF

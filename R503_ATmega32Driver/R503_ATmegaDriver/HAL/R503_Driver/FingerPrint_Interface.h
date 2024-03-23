@@ -14,6 +14,7 @@ extern u8 AckPack [12] ;
 void FingerP_send(u8,u16);
 void FingerPS_handShake(void);
 void FingerPS_genImg(void);
+void FingerPS_convertImg1CharFile();
 void FingerPS_convertImg2CharFile(void);
 void FingerPS_AuraLedConfig(void); 
 void FingerPS_genTemplate(void);
@@ -24,4 +25,6 @@ void FingerPS_deleteFinger(void);
 void FingerPS_LoadCharFile(void);
 void FingerPS_calcCheckSum(void);
 void FingerPS_match(void);
+void StoreAckBytes (u8);
+u8 FingerPS_CheckAck ();
 #endif /* FINGERPRINT_INTERFACE_H_ */
