@@ -52,20 +52,22 @@ void FingerPS_genImg(){
 /* Generate character file from the original finger image in ImageBuffer and
  * store the file in CharBuffer1 or CharBuffer2 
  * BufferID of CharBuffer1 and CharBuffer2 are 0x01 and 0x02 */
-void FingerPS_convertImg2CharFile(){
+void FingerPS_convertImg1CharFile(){
 	/*CharBuffer1*/
 	FingerP_send(PCK_ID_COMMAND_PACK,LENGTH_4BYTE);
 	UART_sendByte(CONVERT_IMG_TO_CHAR);
 	UART_sendByte(CHAR_BUFFER_1);
 	UART_sendByte((PCK_ID_COMMAND_PACK+LENGTH_4BYTE+CHAR_BUFFER_1+CONVERT_IMG_TO_CHAR)>>ONE_BYTE_SHIFT);
 	UART_sendByte((PCK_ID_COMMAND_PACK+LENGTH_4BYTE+CHAR_BUFFER_1+CONVERT_IMG_TO_CHAR)>>NO_BYTE_SHIFT);
+} 
+void FingerPS_convertImg2CharFile(){	
 	/*CharBuffer2*/
 	FingerP_send(PCK_ID_COMMAND_PACK,LENGTH_4BYTE);
 	UART_sendByte(CONVERT_IMG_TO_CHAR);
 	UART_sendByte(CHAR_BUFFER_2);
 	UART_sendByte((PCK_ID_COMMAND_PACK+LENGTH_4BYTE+CHAR_BUFFER_2+CONVERT_IMG_TO_CHAR)>>ONE_BYTE_SHIFT);
 	UART_sendByte((PCK_ID_COMMAND_PACK+LENGTH_4BYTE+CHAR_BUFFER_2+CONVERT_IMG_TO_CHAR)>>NO_BYTE_SHIFT);
-} 
+}
 /* Combine information of character files from CharBuffer1 and CharBuffer2 and
  * generate a template which is stored back in both CharBuffer1 and CharBuffer2*/
 void FingerPS_genTemplate(){
@@ -86,7 +88,8 @@ void FingerPS_strTemplate(){
 	UART_sendByte((FIRST_PAGE_ID+NextPage)>>NO_BYTE_SHIFT);
 	UART_sendByte((PCK_ID_COMMAND_PACK+LENGTH_6BYTE+STR_TEMPLATE+CHAR_BUFFER_1+(FIRST_PAGE_ID+NextPage))>>ONE_BYTE_SHIFT);
 	UART_sendByte((PCK_ID_COMMAND_PACK+LENGTH_6BYTE+STR_TEMPLATE+CHAR_BUFFER_1+(FIRST_PAGE_ID+NextPage))>>NO_BYTE_SHIFT);
-	NextPage++;
+	NextPage++; 
+	if (NextPage == 10) NextPage= 0; 
 } 
 
 /* Search the whole finger library for the template that matches the one in CharBuffer1 or CharBuffer2, 
@@ -104,6 +107,23 @@ void FingerPS_searchFinger(){
 	
 	UART_sendByte((PCK_ID_COMMAND_PACK+LENGTH_8BYTE+SEARCH_FINGER+CHAR_BUFFER_1+FIRST_PAGE_ID+NUM_OF_PAGES_TO_SEARCH)>>ONE_BYTE_SHIFT);
 	UART_sendByte((PCK_ID_COMMAND_PACK+LENGTH_8BYTE+SEARCH_FINGER+CHAR_BUFFER_1+FIRST_PAGE_ID+NUM_OF_PAGES_TO_SEARCH)>>NO_BYTE_SHIFT);
-} 
-
+}  
+void StoreAckBytes (u8 RecivedByte){
+	static u8 i = 0;
+	AckPack [i] = RecivedByte;
+	if (i==11){
+		i = 0;
+	}
+	else i++;
+}
+u8 FingerPS_CheckAck (){
+	u8 CheckResult;
+	if (AckPack[11] == 0x0A){
+		CheckResult = true ;
+	}
+	else{
+		CheckResult = false;
+	}
+	return CheckResult;
+}
 
