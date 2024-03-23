@@ -7,14 +7,17 @@
 
 #include "UART_Interface.h"
 #include "FingerPrint_Interface.h"
+
+#define F_CPU 16000000UL 
+#include "util\delay.h" 
 int main(void)
 {  
 	UART_Init();   
-	// FingerPS_handShake(); 
+	FingerPS_AuraLedConfig();
     /* Replace with your application code */
     while (1) 
-    {
-		/*DO NOTHING*/
+    { 
+		/**/
     }
 }
 

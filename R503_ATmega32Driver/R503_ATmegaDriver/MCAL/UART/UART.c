@@ -40,11 +40,14 @@ SET_BIT (UCSRC_REG_VALUE, URSEL);
 		SET_BIT (UCSRC_REG_VALUE, USBS);
 	#endif   
 /*DEFINING BAUDRATE*/ 
-	#if CLK_SOURCE == MHZ_8 
-		UBRRL = 51; 
-	#elif CLK_SOURCE == MHZ_16
-		UBRRL = 103; 
-	#endif 
+// 	#if CLK_SOURCE == MHZ_8 
+// 		UBRRL = 51; 
+// 	#elif CLK_SOURCE == MHZ_16 /*BaudRate 57600*/
+// 		UBRRL = 0d16; 
+// 	#endif 
+	UBRRL = 16;
+	CLR_BIT(UBRRH, 7);
+	UBRRH |=  0x00;
 /*INTERRUPT MODE ENABLE*/ 
 	#if UART_INT_MODE == ENABLE  
 		SET_BIT(UCSRB_REG_VALUE,RXCIE); 

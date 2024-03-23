@@ -3,31 +3,31 @@ R503_ATmegaDriver.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         000000ea  00000000  00000000  00000074  2**1
+  0 .text         00000184  00000000  00000000  00000074  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .data         00000000  00800060  00800060  0000015e  2**0
+  1 .data         00000000  00800060  00800060  000001f8  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .bss          00000002  00800060  00800060  0000015e  2**0
+  2 .bss          00000002  00800060  00800060  000001f8  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  0000015e  2**0
+  3 .comment      00000030  00000000  00000000  000001f8  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000190  2**2
+  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000228  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 00000068  00000000  00000000  000001cc  2**0
+  5 .debug_aranges 000000c0  00000000  00000000  00000264  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00000753  00000000  00000000  00000234  2**0
+  6 .debug_info   00000d40  00000000  00000000  00000324  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000637  00000000  00000000  00000987  2**0
+  7 .debug_abbrev 00000705  00000000  00000000  00001064  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   000002ff  00000000  00000000  00000fbe  2**0
+  8 .debug_line   00000589  00000000  00000000  00001769  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  000000f0  00000000  00000000  000012c0  2**2
+  9 .debug_frame  000001a0  00000000  00000000  00001cf4  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000003d0  00000000  00000000  000013b0  2**0
+ 10 .debug_str    000004b0  00000000  00000000  00001e94  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    0000017d  00000000  00000000  00001780  2**0
+ 11 .debug_loc    0000023a  00000000  00000000  00002344  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000048  00000000  00000000  000018fd  2**0
+ 12 .debug_ranges 00000090  00000000  00000000  0000257e  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -46,7 +46,7 @@ Disassembly of section .text:
   28:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
   2c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
   30:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
-  34:	0c 94 4b 00 	jmp	0x96	; 0x96 <__vector_13>
+  34:	0c 94 98 00 	jmp	0x130	; 0x130 <__vector_13>
   38:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
   3c:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
   40:	0c 94 3c 00 	jmp	0x78	; 0x78 <__bad_interrupt>
@@ -77,85 +77,167 @@ Disassembly of section .text:
   6c:	b2 07       	cpc	r27, r18
   6e:	e1 f7       	brne	.-8      	; 0x68 <.do_clear_bss_loop>
   70:	0e 94 3e 00 	call	0x7c	; 0x7c <main>
-  74:	0c 94 73 00 	jmp	0xe6	; 0xe6 <_exit>
+  74:	0c 94 c0 00 	jmp	0x180	; 0x180 <_exit>
 
 00000078 <__bad_interrupt>:
   78:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
 
 0000007c <main>:
 
-#include "UART_Interface.h"
-#include "FingerPrint_Interface.h"
+#define F_CPU 16000000UL 
+#include "util\delay.h" 
 int main(void)
 {  
 	UART_Init();   
-  7c:	0e 94 41 00 	call	0x82	; 0x82 <UART_Init>
-  80:	ff cf       	rjmp	.-2      	; 0x80 <main+0x4>
+  7c:	0e 94 83 00 	call	0x106	; 0x106 <UART_Init>
+	FingerPS_AuraLedConfig();
+  80:	0e 94 68 00 	call	0xd0	; 0xd0 <FingerPS_AuraLedConfig>
+  84:	ff cf       	rjmp	.-2      	; 0x84 <main+0x8>
 
-00000082 <UART_Init>:
+00000086 <FingerP_send>:
+/* A FUNCTION TO SEND A HANDSHAKE */
+void FingerPS_handShake(void){
+	FingerP_send(PCK_ID_COMMAND_PACK,LENGTH_3BYTE);
+	UART_sendByte(HAND_SHAKE);
+	UART_sendByte((PCK_ID_COMMAND_PACK+LENGTH_3BYTE+HAND_SHAKE)>>ONE_BYTE_SHIFT);
+	UART_sendByte((PCK_ID_COMMAND_PACK+LENGTH_3BYTE+HAND_SHAKE)>>NO_BYTE_SHIFT);
+  86:	1f 93       	push	r17
+  88:	cf 93       	push	r28
+  8a:	df 93       	push	r29
+  8c:	18 2f       	mov	r17, r24
+  8e:	c6 2f       	mov	r28, r22
+  90:	d7 2f       	mov	r29, r23
+  92:	8f ee       	ldi	r24, 0xEF	; 239
+  94:	0e 94 92 00 	call	0x124	; 0x124 <UART_sendByte>
+  98:	81 e0       	ldi	r24, 0x01	; 1
+  9a:	0e 94 92 00 	call	0x124	; 0x124 <UART_sendByte>
+  9e:	8f ef       	ldi	r24, 0xFF	; 255
+  a0:	0e 94 92 00 	call	0x124	; 0x124 <UART_sendByte>
+  a4:	8f ef       	ldi	r24, 0xFF	; 255
+  a6:	0e 94 92 00 	call	0x124	; 0x124 <UART_sendByte>
+  aa:	8f ef       	ldi	r24, 0xFF	; 255
+  ac:	0e 94 92 00 	call	0x124	; 0x124 <UART_sendByte>
+  b0:	8f ef       	ldi	r24, 0xFF	; 255
+  b2:	0e 94 92 00 	call	0x124	; 0x124 <UART_sendByte>
+  b6:	81 2f       	mov	r24, r17
+  b8:	0e 94 92 00 	call	0x124	; 0x124 <UART_sendByte>
+  bc:	8d 2f       	mov	r24, r29
+  be:	0e 94 92 00 	call	0x124	; 0x124 <UART_sendByte>
+  c2:	8c 2f       	mov	r24, r28
+  c4:	0e 94 92 00 	call	0x124	; 0x124 <UART_sendByte>
+  c8:	df 91       	pop	r29
+  ca:	cf 91       	pop	r28
+  cc:	1f 91       	pop	r17
+  ce:	08 95       	ret
+
+000000d0 <FingerPS_AuraLedConfig>:
+} 
+void FingerPS_AuraLedConfig (void){
+	FingerP_send(PCK_ID_COMMAND_PACK,LENGTH_7BYTE);
+  d0:	67 e0       	ldi	r22, 0x07	; 7
+  d2:	70 e0       	ldi	r23, 0x00	; 0
+  d4:	81 e0       	ldi	r24, 0x01	; 1
+  d6:	0e 94 43 00 	call	0x86	; 0x86 <FingerP_send>
+	UART_sendByte(AURA_LED_CONFIG);
+  da:	85 e3       	ldi	r24, 0x35	; 53
+  dc:	0e 94 92 00 	call	0x124	; 0x124 <UART_sendByte>
+	UART_sendByte(LIGHT_BREATHING);
+  e0:	81 e0       	ldi	r24, 0x01	; 1
+  e2:	0e 94 92 00 	call	0x124	; 0x124 <UART_sendByte>
+	UART_sendByte(MEDIUM_SPEED);
+  e6:	80 ef       	ldi	r24, 0xF0	; 240
+  e8:	0e 94 92 00 	call	0x124	; 0x124 <UART_sendByte>
+	UART_sendByte(COLOR_INDEX_RED);
+  ec:	81 e0       	ldi	r24, 0x01	; 1
+  ee:	0e 94 92 00 	call	0x124	; 0x124 <UART_sendByte>
+	UART_sendByte(LIGHT_COUNT);
+  f2:	8f ef       	ldi	r24, 0xFF	; 255
+  f4:	0e 94 92 00 	call	0x124	; 0x124 <UART_sendByte>
+	UART_sendByte((PCK_ID_COMMAND_PACK+LENGTH_7BYTE+AURA_LED_CONFIG+LIGHT_BREATHING+MEDIUM_SPEED+COLOR_INDEX_RED+LIGHT_COUNT)>>ONE_BYTE_SHIFT);
+  f8:	82 e0       	ldi	r24, 0x02	; 2
+  fa:	0e 94 92 00 	call	0x124	; 0x124 <UART_sendByte>
+	UART_sendByte((PCK_ID_COMMAND_PACK+LENGTH_7BYTE+AURA_LED_CONFIG+LIGHT_BREATHING+MEDIUM_SPEED+COLOR_INDEX_RED+LIGHT_COUNT)>>NO_BYTE_SHIFT);
+  fe:	8e e2       	ldi	r24, 0x2E	; 46
+ 100:	0e 94 92 00 	call	0x124	; 0x124 <UART_sendByte>
+ 104:	08 95       	ret
+
+00000106 <UART_Init>:
 		/*WAIT UNTIL THE RECIEVER FLAG IS ONE*/
 	}
 	return (UDR);
 }
 void UART_receiveByteAsynchCallBack(void(*CpyPtr)(u8)){
 	ptr_func = CpyPtr; 
-  82:	83 e3       	ldi	r24, 0x33	; 51
-  84:	89 b9       	out	0x09, r24	; 9
-  86:	88 e9       	ldi	r24, 0x98	; 152
-  88:	8a b9       	out	0x0a, r24	; 10
-  8a:	80 b5       	in	r24, 0x20	; 32
-  8c:	80 68       	ori	r24, 0x80	; 128
-  8e:	80 bd       	out	0x20, r24	; 32
-  90:	86 e8       	ldi	r24, 0x86	; 134
-  92:	80 bd       	out	0x20, r24	; 32
-  94:	08 95       	ret
+ 106:	80 e1       	ldi	r24, 0x10	; 16
+ 108:	89 b9       	out	0x09, r24	; 9
+ 10a:	80 b5       	in	r24, 0x20	; 32
+ 10c:	8f 77       	andi	r24, 0x7F	; 127
+ 10e:	80 bd       	out	0x20, r24	; 32
+ 110:	80 b5       	in	r24, 0x20	; 32
+ 112:	80 bd       	out	0x20, r24	; 32
+ 114:	88 e9       	ldi	r24, 0x98	; 152
+ 116:	8a b9       	out	0x0a, r24	; 10
+ 118:	80 b5       	in	r24, 0x20	; 32
+ 11a:	80 68       	ori	r24, 0x80	; 128
+ 11c:	80 bd       	out	0x20, r24	; 32
+ 11e:	86 e8       	ldi	r24, 0x86	; 134
+ 120:	80 bd       	out	0x20, r24	; 32
+ 122:	08 95       	ret
 
-00000096 <__vector_13>:
+00000124 <UART_sendByte>:
+ 124:	5d 9b       	sbis	0x0b, 5	; 11
+ 126:	fe cf       	rjmp	.-4      	; 0x124 <UART_sendByte>
+ 128:	8c b9       	out	0x0c, r24	; 12
+ 12a:	5e 9b       	sbis	0x0b, 6	; 11
+ 12c:	fe cf       	rjmp	.-4      	; 0x12a <UART_sendByte+0x6>
+ 12e:	08 95       	ret
+
+00000130 <__vector_13>:
 } 
 ISR(USART_RXC_vect){
-  96:	1f 92       	push	r1
-  98:	0f 92       	push	r0
-  9a:	0f b6       	in	r0, 0x3f	; 63
-  9c:	0f 92       	push	r0
-  9e:	11 24       	eor	r1, r1
-  a0:	2f 93       	push	r18
-  a2:	3f 93       	push	r19
-  a4:	4f 93       	push	r20
-  a6:	5f 93       	push	r21
-  a8:	6f 93       	push	r22
-  aa:	7f 93       	push	r23
-  ac:	8f 93       	push	r24
-  ae:	9f 93       	push	r25
-  b0:	af 93       	push	r26
-  b2:	bf 93       	push	r27
-  b4:	ef 93       	push	r30
-  b6:	ff 93       	push	r31
+ 130:	1f 92       	push	r1
+ 132:	0f 92       	push	r0
+ 134:	0f b6       	in	r0, 0x3f	; 63
+ 136:	0f 92       	push	r0
+ 138:	11 24       	eor	r1, r1
+ 13a:	2f 93       	push	r18
+ 13c:	3f 93       	push	r19
+ 13e:	4f 93       	push	r20
+ 140:	5f 93       	push	r21
+ 142:	6f 93       	push	r22
+ 144:	7f 93       	push	r23
+ 146:	8f 93       	push	r24
+ 148:	9f 93       	push	r25
+ 14a:	af 93       	push	r26
+ 14c:	bf 93       	push	r27
+ 14e:	ef 93       	push	r30
+ 150:	ff 93       	push	r31
 	ptr_func(UDR);
-  b8:	8c b1       	in	r24, 0x0c	; 12
-  ba:	e0 91 60 00 	lds	r30, 0x0060	; 0x800060 <__DATA_REGION_ORIGIN__>
-  be:	f0 91 61 00 	lds	r31, 0x0061	; 0x800061 <__DATA_REGION_ORIGIN__+0x1>
-  c2:	09 95       	icall
+ 152:	8c b1       	in	r24, 0x0c	; 12
+ 154:	e0 91 60 00 	lds	r30, 0x0060	; 0x800060 <__DATA_REGION_ORIGIN__>
+ 158:	f0 91 61 00 	lds	r31, 0x0061	; 0x800061 <__DATA_REGION_ORIGIN__+0x1>
+ 15c:	09 95       	icall
 }
-  c4:	ff 91       	pop	r31
-  c6:	ef 91       	pop	r30
-  c8:	bf 91       	pop	r27
-  ca:	af 91       	pop	r26
-  cc:	9f 91       	pop	r25
-  ce:	8f 91       	pop	r24
-  d0:	7f 91       	pop	r23
-  d2:	6f 91       	pop	r22
-  d4:	5f 91       	pop	r21
-  d6:	4f 91       	pop	r20
-  d8:	3f 91       	pop	r19
-  da:	2f 91       	pop	r18
-  dc:	0f 90       	pop	r0
-  de:	0f be       	out	0x3f, r0	; 63
-  e0:	0f 90       	pop	r0
-  e2:	1f 90       	pop	r1
-  e4:	18 95       	reti
+ 15e:	ff 91       	pop	r31
+ 160:	ef 91       	pop	r30
+ 162:	bf 91       	pop	r27
+ 164:	af 91       	pop	r26
+ 166:	9f 91       	pop	r25
+ 168:	8f 91       	pop	r24
+ 16a:	7f 91       	pop	r23
+ 16c:	6f 91       	pop	r22
+ 16e:	5f 91       	pop	r21
+ 170:	4f 91       	pop	r20
+ 172:	3f 91       	pop	r19
+ 174:	2f 91       	pop	r18
+ 176:	0f 90       	pop	r0
+ 178:	0f be       	out	0x3f, r0	; 63
+ 17a:	0f 90       	pop	r0
+ 17c:	1f 90       	pop	r1
+ 17e:	18 95       	reti
 
-000000e6 <_exit>:
-  e6:	f8 94       	cli
+00000180 <_exit>:
+ 180:	f8 94       	cli
 
-000000e8 <__stop_program>:
-  e8:	ff cf       	rjmp	.-2      	; 0xe8 <__stop_program>
+00000182 <__stop_program>:
+ 182:	ff cf       	rjmp	.-2      	; 0x182 <__stop_program>

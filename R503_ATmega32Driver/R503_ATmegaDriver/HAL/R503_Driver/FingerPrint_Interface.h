@@ -15,6 +15,7 @@ void FingerP_send(u8,u16);
 void FingerPS_handShake(void);
 void FingerPS_genImg(void);
 void FingerPS_convertImg2CharFile(void);
+void FingerPS_AuraLedConfig(void); 
 void FingerPS_genTemplate(void);
 void FingerPS_strTemplate(void);
 void FingerPS_searchFinger(void);

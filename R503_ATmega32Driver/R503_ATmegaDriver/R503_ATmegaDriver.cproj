@@ -101,6 +101,7 @@
       <Value>..</Value>
       <Value>../HAL/R503_Driver</Value>
       <Value>../MCAL/UART</Value>
+      <Value>../HAL/LCD</Value>
     </ListValues>
   </avrgcc.compiler.directories.IncludePaths>
   <avrgcc.compiler.optimization.level>Optimize debugging experience (-Og)</avrgcc.compiler.optimization.level>
