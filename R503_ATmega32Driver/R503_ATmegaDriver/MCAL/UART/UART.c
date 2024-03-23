@@ -11,7 +11,8 @@
 void (*ptr_func) (u8) = '\0'; 
 void UART_Init(void){
 u8 UCSRB_REG_VALUE = 0; 
-u8 UCSRC_REG_VALUE = 0;  
+u8 UCSRC_REG_VALUE = 0; 
+u8 UBRR_Value = 0;  
 /********SET URSELC TO 1 TO WRITE TO THE UCSRC REG*/
 SET_BIT (UCSRC_REG_VALUE, URSEL);
 /*ENABLE RX AND TX BIT4 AND BIT3 IN UCSRB REG*/ 
@@ -40,13 +41,10 @@ SET_BIT (UCSRC_REG_VALUE, URSEL);
 		SET_BIT (UCSRC_REG_VALUE, USBS);
 	#endif   
 /*DEFINING BAUDRATE*/ 
-// 	#if CLK_SOURCE == MHZ_8 
-// 		UBRRL = 51; 
-// 	#elif CLK_SOURCE == MHZ_16 /*BaudRate 57600*/
-// 		UBRRL = 0d16; 
-// 	#endif 
-	UBRRL = 16;
-	CLR_BIT(UBRRH, 7);
+	UBRR_Value = (u16)(((F_CPU) / ((u32) 16*BAUDRATE)) -1) ; 	
+	CLR_BIT(UBRRH, URSEL); 
+	UBRRH = (UBRR_Value >> 8); 
+	UBRRL = UBRR_Value;
 	UBRRH |=  0x00;
 /*INTERRUPT MODE ENABLE*/ 
 	#if UART_INT_MODE == ENABLE  

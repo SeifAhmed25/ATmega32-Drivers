@@ -7,17 +7,26 @@
 
 #include "UART_Interface.h"
 #include "FingerPrint_Interface.h"
-
-#define F_CPU 16000000UL 
 #include "util\delay.h" 
+void StoreAckBytes (u8);
 int main(void)
 {  
-	UART_Init();   
-	FingerPS_AuraLedConfig();
+	UART_Init(); 
+	UART_receiveByteAsynchCallBack(StoreAckBytes);   
+	sei ();
+	FingerPS_AuraLedConfig(); 
     /* Replace with your application code */
     while (1) 
     { 
 		/**/
     }
+} 
+void StoreAckBytes (u8 RecivedByte){
+	static u8 i = 0; 
+	AckPack [i] = RecivedByte; 
+	if (i==11){
+		i = 0; 
+	} 
+	else i++; 
 }
 

@@ -10,7 +10,7 @@
 
 #include "FingerPrint_Config.h"
 #include "UART_Interface.h"
-
+extern u8 AckPack [12] ;
 void FingerP_send(u8,u16);
 void FingerPS_handShake(void);
 void FingerPS_genImg(void);
