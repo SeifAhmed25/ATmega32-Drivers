@@ -18,13 +18,15 @@ void FingerPS_convertImg1CharFile();
 void FingerPS_convertImg2CharFile(void);
 void FingerPS_AuraLedConfig(void); 
 void FingerPS_genTemplate(void);
-void FingerPS_strTemplate(void);
+void FingerPS_strTemplate(u16);
 void FingerPS_searchFinger(void);
 void FingerPS_emptyLibrary(void);
 void FingerPS_deleteFinger(void);
-void FingerPS_LoadCharFile(void);
+void FingerPS_LoadCharFile(u16);
 void FingerPS_calcCheckSum(void);
 void FingerPS_match(void);
 void StoreAckBytes (u8);
 u8 FingerPS_CheckAck ();
+void FingerPS_SetNewFingerPrint (u16);
+u8 FingerPS_CheckOneToOneMatch(u16);
 #endif /* FINGERPRINT_INTERFACE_H_ */

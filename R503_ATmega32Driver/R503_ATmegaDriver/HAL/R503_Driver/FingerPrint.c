@@ -1,5 +1,6 @@
 
-#include "FingerPrint_Interface.h"
+#include "FingerPrint_Interface.h" 
+/*A function to store the Acknowledgment Bytes*/
 u8 AckPack [12] = {0};
    /*
 	A FUNCTION TO SEND THE WHOLE A FRAME AS FOLLOWS
@@ -108,14 +109,14 @@ void FingerPS_genTemplate(){
  * at the designated location of Flash library
  * PageID?Flash location of the Template				
  */
-void FingerPS_strTemplate(){
+void FingerPS_strTemplate(u16 address){
 	FingerP_send(PCK_ID_COMMAND_PACK,LENGTH_6BYTE);
 	UART_sendByte(STR_TEMPLATE);
 	UART_sendByte(CHAR_BUFFER_1);
-	UART_sendByte(0x00);
-	UART_sendByte(0x04);
-	UART_sendByte((PCK_ID_COMMAND_PACK+LENGTH_6BYTE+STR_TEMPLATE+CHAR_BUFFER_1+0x04)>>ONE_BYTE_SHIFT);
-	UART_sendByte((PCK_ID_COMMAND_PACK+LENGTH_6BYTE+STR_TEMPLATE+CHAR_BUFFER_1+0x04)>>NO_BYTE_SHIFT);
+	UART_sendByte(address >> ONE_BYTE_SHIFT);
+	UART_sendByte(address >> NO_BYTE_SHIFT); 
+	UART_sendByte((PCK_ID_COMMAND_PACK+LENGTH_6BYTE+STR_TEMPLATE+CHAR_BUFFER_1+address)>>ONE_BYTE_SHIFT);
+	UART_sendByte((PCK_ID_COMMAND_PACK+LENGTH_6BYTE+STR_TEMPLATE+CHAR_BUFFER_1+address)>>NO_BYTE_SHIFT);
 } 
 
 /* Search the whole finger library for the template that matches the one in CharBuffer1 or CharBuffer2, 
@@ -134,7 +135,7 @@ void FingerPS_searchFinger(){
 	UART_sendByte((PCK_ID_COMMAND_PACK+LENGTH_8BYTE+SEARCH_FINGER+CHAR_BUFFER_1+FIRST_PAGE_ID+NUM_OF_PAGES_TO_SEARCH)>>ONE_BYTE_SHIFT);
 	UART_sendByte((PCK_ID_COMMAND_PACK+LENGTH_8BYTE+SEARCH_FINGER+CHAR_BUFFER_1+FIRST_PAGE_ID+NUM_OF_PAGES_TO_SEARCH)>>NO_BYTE_SHIFT);
 }  
-void FingerPS_LoadCharFile(){
+void FingerPS_LoadCharFile(u16 address){
 	UART_sendByte(0xef);
 	UART_sendByte(0x01);
 	UART_sendByte(0xff);
@@ -146,8 +147,8 @@ void FingerPS_LoadCharFile(){
 	UART_sendByte(0x06);
 	UART_sendByte(0x07);
 	UART_sendByte(0x02); /*load in the char file 2*/
-	UART_sendByte(0x00);
-	UART_sendByte(0x04);
+	UART_sendByte(address>>ONE_BYTE_SHIFT);
+	UART_sendByte(address>>NO_BYTE_SHIFT);
 	UART_sendByte(0x00); 
 	UART_sendByte(0x14);
 } 
@@ -174,6 +175,7 @@ void StoreAckBytes (u8 RecivedByte){
 	}
 	else i++;
 }
+/********************************************* FUNCTION TO CHECK THE SUM OF EACH ACKNOWLEDGMENT PACK	***************/
 u8 FingerPS_CheckAck (){
 	u8 CheckResult;
 	if (AckPack[11] == 0x0A){
@@ -185,5 +187,63 @@ u8 FingerPS_CheckAck (){
 	}
 	return CheckResult;
 } 
-
+void FingerPS_SetNewFingerPrint (u16 address){
+	/*********************************************		FIRST IMAGE GENERATION	******************************************/
+	RepeatGenImag1:
+	FingerPS_genImg();
+	_delay_ms(100);
+	if (FingerPS_CheckAck() == false) goto RepeatGenImag1; /*WAIT FOR ACK*/
+	/*********************************************	FIRST CHARACTER FILE GENERATION	**************************************/
+	RepeatConvertFile1:
+	FingerPS_convertImg1CharFile();
+	_delay_ms(100);
+	if (FingerPS_CheckAck() == false) goto RepeatConvertFile1; /*WAIT FOR ACK*/
+	/*********************************************		SECOND IMAGE GENERATION		**************************************/
+	RepeatGenImag2:
+	FingerPS_genImg();
+	_delay_ms(100);
+	if (FingerPS_CheckAck() == false) goto RepeatGenImag2;/*WAIT FOR ACK*/
+	/*********************************************		SECONED CHAR FILE GENERATED		**********************************/
+	RepeatConvertFile2:
+	FingerPS_convertImg2CharFile();
+	_delay_ms(100);
+	if (FingerPS_CheckAck() == false) goto RepeatConvertFile2;/*WAIT FOR ACK*/
+	/********************************************		Generate Tempelate			**********************************/
+	FingerPS_genTemplate();
+	_delay_ms(500);
+	if (FingerPS_CheckAck() == false) goto RepeatGenImag1;/*WAIT FOR ACK*/
+	/*******************************************		Tempelate Storing			***********************************/
+	RepeatStrTemp:
+	FingerPS_strTemplate(address);
+	_delay_ms(100);
+	if (FingerPS_CheckAck() == false) goto RepeatStrTemp;/*WAIT FOR ACK*/
+}
+u8 FingerPS_CheckOneToOneMatch(u16 address){
+	u8 match_result; 
+	/*******************************************		Generate Image to check one to one match	********************/
+	RepeatCheckImagGen:
+	FingerPS_genImg();
+	_delay_ms(100);
+	if (FingerPS_CheckAck() == false) goto RepeatCheckImagGen; /*WAIT FOR ACK*/
+	/******************************************			Generate char from Check Image	****************************************/
+	RepeatCharCheckFileGen:
+	FingerPS_convertImg1CharFile();
+	_delay_ms(100);
+	if (FingerPS_CheckAck() == false) goto RepeatCharCheckFileGen; /*WAIT FOR ACK*/
+	/******************************************			Load Char in char file 2	***********************************/
+	RepeatLoadCharFile:
+	FingerPS_LoadCharFile(address);
+	_delay_ms(100);
+	if (FingerPS_CheckAck() == false) goto RepeatLoadCharFile; /*Wait for ACK*/
+	/******************************************			CHECK MATCH				****************************************/
+	FingerPS_match();
+	_delay_ms(100); 
+	if (AckPack[9] == 0x00){
+		match_result = MATCHED;
+	}
+	else {
+		match_result = NOTMATCHED; 
+	} 
+	return match_result; 
+}
 
