@@ -1,10 +1,8 @@
 
-
-
 #include "FingerPrint_Interface.h"
-u16 NextPage = 0x0000 ;
-u8 AckPack [12] = {0}; 
-/* A FUNCTION TO SEND THE WHOLE A FRAME AS FOLLOWS
+u8 AckPack [12] = {0};
+   /*
+	A FUNCTION TO SEND THE WHOLE A FRAME AS FOLLOWS
  * 2 BYTE HEADER
  * 8 BYTE ADDRESS
  * 1 BYTE PACKAGE ID 
@@ -54,27 +52,57 @@ void FingerPS_genImg(){
  * BufferID of CharBuffer1 and CharBuffer2 are 0x01 and 0x02 */
 void FingerPS_convertImg1CharFile(){
 	/*CharBuffer1*/
-	FingerP_send(PCK_ID_COMMAND_PACK,LENGTH_4BYTE);
-	UART_sendByte(CONVERT_IMG_TO_CHAR);
-	UART_sendByte(CHAR_BUFFER_1);
-	UART_sendByte((PCK_ID_COMMAND_PACK+LENGTH_4BYTE+CHAR_BUFFER_1+CONVERT_IMG_TO_CHAR)>>ONE_BYTE_SHIFT);
-	UART_sendByte((PCK_ID_COMMAND_PACK+LENGTH_4BYTE+CHAR_BUFFER_1+CONVERT_IMG_TO_CHAR)>>NO_BYTE_SHIFT);
+		UART_sendByte(0xef);
+		UART_sendByte(0x01);
+		UART_sendByte(0xff);
+		UART_sendByte(0xff);
+		UART_sendByte(0xff);
+		UART_sendByte(0xff);
+		UART_sendByte(0x01);
+		UART_sendByte(0x00);
+		UART_sendByte(0x04);
+		UART_sendByte(0x02);
+		UART_sendByte(0x01);
+		UART_sendByte(0x00);
+		UART_sendByte(0x08);
 } 
 void FingerPS_convertImg2CharFile(){	
 	/*CharBuffer2*/
-	FingerP_send(PCK_ID_COMMAND_PACK,LENGTH_4BYTE);
-	UART_sendByte(CONVERT_IMG_TO_CHAR);
-	UART_sendByte(CHAR_BUFFER_2);
-	UART_sendByte((PCK_ID_COMMAND_PACK+LENGTH_4BYTE+CHAR_BUFFER_2+CONVERT_IMG_TO_CHAR)>>ONE_BYTE_SHIFT);
-	UART_sendByte((PCK_ID_COMMAND_PACK+LENGTH_4BYTE+CHAR_BUFFER_2+CONVERT_IMG_TO_CHAR)>>NO_BYTE_SHIFT);
+		UART_sendByte(0xef);
+		UART_sendByte(0x01);
+		UART_sendByte(0xff);
+		UART_sendByte(0xff);
+		UART_sendByte(0xff);
+		UART_sendByte(0xff);
+		UART_sendByte(0x01);
+		UART_sendByte(0x00);
+		UART_sendByte(0x04);
+		UART_sendByte(0x02);
+		UART_sendByte(0x02);
+		UART_sendByte(0x00);
+		UART_sendByte(0x09);
 }
 /* Combine information of character files from CharBuffer1 and CharBuffer2 and
  * generate a template which is stored back in both CharBuffer1 and CharBuffer2*/
 void FingerPS_genTemplate(){
+	/*
 	FingerP_send(PCK_ID_COMMAND_PACK,LENGTH_3BYTE);
 	UART_sendByte(GEN_TEMPLATE);
 	UART_sendByte((PCK_ID_COMMAND_PACK+LENGTH_3BYTE+GEN_TEMPLATE)>>ONE_BYTE_SHIFT);
 	UART_sendByte((PCK_ID_COMMAND_PACK+LENGTH_3BYTE+GEN_TEMPLATE)>>NO_BYTE_SHIFT);
+	*/
+	UART_sendByte(0xef);
+	UART_sendByte(0x01);
+	UART_sendByte(0xff);
+	UART_sendByte(0xff);
+	UART_sendByte(0xff);
+	UART_sendByte(0xff);
+	UART_sendByte(0x01);
+	UART_sendByte(0x00);
+	UART_sendByte(0x03);
+	UART_sendByte(0x05);
+	UART_sendByte(0x00);
+	UART_sendByte(0x09);
 } 
 /* Store the template of specified buffer (Buffer1/Buffer2)
  * at the designated location of Flash library
@@ -84,12 +112,10 @@ void FingerPS_strTemplate(){
 	FingerP_send(PCK_ID_COMMAND_PACK,LENGTH_6BYTE);
 	UART_sendByte(STR_TEMPLATE);
 	UART_sendByte(CHAR_BUFFER_1);
-	UART_sendByte((FIRST_PAGE_ID+NextPage)>>ONE_BYTE_SHIFT);
-	UART_sendByte((FIRST_PAGE_ID+NextPage)>>NO_BYTE_SHIFT);
-	UART_sendByte((PCK_ID_COMMAND_PACK+LENGTH_6BYTE+STR_TEMPLATE+CHAR_BUFFER_1+(FIRST_PAGE_ID+NextPage))>>ONE_BYTE_SHIFT);
-	UART_sendByte((PCK_ID_COMMAND_PACK+LENGTH_6BYTE+STR_TEMPLATE+CHAR_BUFFER_1+(FIRST_PAGE_ID+NextPage))>>NO_BYTE_SHIFT);
-	NextPage++; 
-	if (NextPage == 10) NextPage= 0; 
+	UART_sendByte(0x00);
+	UART_sendByte(0x04);
+	UART_sendByte((PCK_ID_COMMAND_PACK+LENGTH_6BYTE+STR_TEMPLATE+CHAR_BUFFER_1+0x04)>>ONE_BYTE_SHIFT);
+	UART_sendByte((PCK_ID_COMMAND_PACK+LENGTH_6BYTE+STR_TEMPLATE+CHAR_BUFFER_1+0x04)>>NO_BYTE_SHIFT);
 } 
 
 /* Search the whole finger library for the template that matches the one in CharBuffer1 or CharBuffer2, 
@@ -108,9 +134,41 @@ void FingerPS_searchFinger(){
 	UART_sendByte((PCK_ID_COMMAND_PACK+LENGTH_8BYTE+SEARCH_FINGER+CHAR_BUFFER_1+FIRST_PAGE_ID+NUM_OF_PAGES_TO_SEARCH)>>ONE_BYTE_SHIFT);
 	UART_sendByte((PCK_ID_COMMAND_PACK+LENGTH_8BYTE+SEARCH_FINGER+CHAR_BUFFER_1+FIRST_PAGE_ID+NUM_OF_PAGES_TO_SEARCH)>>NO_BYTE_SHIFT);
 }  
+void FingerPS_LoadCharFile(){
+	UART_sendByte(0xef);
+	UART_sendByte(0x01);
+	UART_sendByte(0xff);
+	UART_sendByte(0xff);
+	UART_sendByte(0xff);
+	UART_sendByte(0xff);
+	UART_sendByte(0x01);
+	UART_sendByte(0x00);
+	UART_sendByte(0x06);
+	UART_sendByte(0x07);
+	UART_sendByte(0x02); /*load in the char file 2*/
+	UART_sendByte(0x00);
+	UART_sendByte(0x04);
+	UART_sendByte(0x00); 
+	UART_sendByte(0x14);
+} 
+void FingerPS_match(){
+	UART_sendByte(0xef);
+	UART_sendByte(0x01);
+	UART_sendByte(0xff);
+	UART_sendByte(0xff);
+	UART_sendByte(0xff);
+	UART_sendByte(0xff);
+	UART_sendByte(0x01);
+	UART_sendByte(0x00);
+	UART_sendByte(0x03);
+	UART_sendByte(0x03);
+	UART_sendByte(0x00);
+	UART_sendByte(0x07);
+}
+/********************************************** ISR	***************************************/
 void StoreAckBytes (u8 RecivedByte){
 	static u8 i = 0;
-	AckPack [i] = RecivedByte;
+	AckPack [i] = RecivedByte; 
 	if (i==11){
 		i = 0;
 	}
@@ -120,10 +178,12 @@ u8 FingerPS_CheckAck (){
 	u8 CheckResult;
 	if (AckPack[11] == 0x0A){
 		CheckResult = true ;
+		AckPack [11] = 0x00; 
 	}
 	else{
 		CheckResult = false;
 	}
 	return CheckResult;
-}
+} 
+
 
