@@ -7,11 +7,24 @@
 #include "I2C_Private.h"
 #include "I2C_Interface.h" 
 #define F_CPU 16000000UL 
-#define SCL_CLK 200000
-#define BITRATE(TWSR_REG)	((F_CPU/SCL_CLK)-16)/(2*pow(4,(TWSR_REG&((1<<TWPS0)|(1<<TWPS1)))))
+#define SCL_CLK 200000 /*Select SCL_CLK in Hz*/
+#define BITRATE(TWSR_REG)	((F_CPU/SCL_CLK)-16)/(2 * (1 << (TWSR_REG*2)))
 /*************************		INITIATE I2C	******************/
 void M_Void_I2C_Init (){
-	TWBR_REG = BITRATE(TWSR_REG=0x00);	 
+	#if TWPS == TWPS_Value1
+		CLR_BIT(TWSR_REG,TWPS0);
+		CLR_BIT(TWSR_REG,TWPS1);
+	#elif TWPS == TWPS_Value4
+		SET_BIT(TWSR_REG,TWPS0);
+		CLR_BIT(TWSR_REG,TWPS1); 
+	#elif TWPS == TWPS_Value16 
+		CLR_BIT(TWSR_REG,TWPS0);
+		SET_BIT(TWSR_REG,TWPS1);
+	#elif TWPS == TWPS_Value64 
+		SET_BIT(TWSR_REG,TWPS0);
+		SET_BIT(TWSR_REG,TWPS1);
+	#endif
+	TWBR_REG = BITRATE(TWSR_REG);	 
 } 
 /*************************		SEND START		*******************/
 u8 M_U8_I2C_Start(){

@@ -10,7 +10,6 @@
 #define I2C_INTERFACE_H_
 #include "STD.h"
 #include "BITMATH.h"
-#include "MATH.h"
 #include "I2C_Config.h"
 void M_Void_I2C_Init (void); 
 u8 M_U8_I2C_Start(void); 

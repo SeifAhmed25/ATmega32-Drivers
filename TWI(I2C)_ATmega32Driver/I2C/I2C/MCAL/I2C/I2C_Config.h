@@ -26,5 +26,18 @@
 #define TWI_MR_SLA_R_ARB_LOST		0X38 /*Master send slave address + write or data but lost arbitration*/
 #define TWI_MR_SLA_R_ACK			0X40 /*Master receive ACk after sending slave address + read*/
 #define TWI_MR_SLA_R_NACK			0x48 /*Master didn't receive ACk after sending slave address + read*/
+/*TWPS (Pre Scaler Vlaues)
+  TWPS1		TWPS0		PS Value
+	0		  0				1
+	0		  1				4 
+	1		  0				16
+	1		  1				64 
+	*/ 
+#define TWPS_Value1 1
+#define TWPS_Value4 4 
+#define TWPS_Value16 16 
+#define TWPS_Value64 64 
+/*Pre define TWPS => PS Value 1*/
+#define TWPS TWPS_Value1
 
 #endif /* I2C_CONFIG_H_ */

@@ -3,29 +3,29 @@ I2C.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         000000d8  00000000  00000000  00000054  2**1
+  0 .text         0000014e  00000000  00000000  00000054  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .data         00000000  00800060  00800060  0000012c  2**0
+  1 .data         00000000  00800060  00800060  000001a2  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .comment      00000030  00000000  00000000  0000012c  2**0
+  2 .comment      00000030  00000000  00000000  000001a2  2**0
                   CONTENTS, READONLY
-  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  0000015c  2**2
+  3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000001d4  2**2
                   CONTENTS, READONLY
-  4 .debug_aranges 00000080  00000000  00000000  00000198  2**0
+  4 .debug_aranges 00000080  00000000  00000000  00000210  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   000007db  00000000  00000000  00000218  2**0
+  5 .debug_info   000007db  00000000  00000000  00000290  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 000005cd  00000000  00000000  000009f3  2**0
+  6 .debug_abbrev 000005cd  00000000  00000000  00000a6b  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   00000368  00000000  00000000  00000fc0  2**0
+  7 .debug_line   00000375  00000000  00000000  00001038  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  000000c8  00000000  00000000  00001328  2**2
+  8 .debug_frame  000000c8  00000000  00000000  000013b0  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    0000040e  00000000  00000000  000013f0  2**0
+  9 .debug_str    0000040e  00000000  00000000  00001478  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    000000f0  00000000  00000000  000017fe  2**0
+ 10 .debug_loc    000000f0  00000000  00000000  00001886  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 00000060  00000000  00000000  000018ee  2**0
+ 11 .debug_ranges 00000060  00000000  00000000  00001976  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -61,7 +61,7 @@ Disassembly of section .text:
   5c:	de bf       	out	0x3e, r29	; 62
   5e:	cd bf       	out	0x3d, r28	; 61
   60:	0e 94 36 00 	call	0x6c	; 0x6c <main>
-  64:	0c 94 6a 00 	jmp	0xd4	; 0xd4 <_exit>
+  64:	0c 94 a5 00 	jmp	0x14a	; 0x14a <_exit>
 
 00000068 <__bad_interrupt>:
   68:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
@@ -75,15 +75,15 @@ int main(void)
 	M_Void_I2C_Init(); 
   6c:	0e 94 43 00 	call	0x86	; 0x86 <M_Void_I2C_Init>
 	M_U8_I2C_Start();								
-  70:	0e 94 47 00 	call	0x8e	; 0x8e <M_U8_I2C_Start>
+  70:	0e 94 60 00 	call	0xc0	; 0xc0 <M_U8_I2C_Start>
 	M_U8_I2C_SendSlaveAddressWithWrite(0xA0); 
   74:	80 ea       	ldi	r24, 0xA0	; 160
-  76:	0e 94 52 00 	call	0xa4	; 0xa4 <M_U8_I2C_SendSlaveAddressWithWrite>
+  76:	0e 94 6b 00 	call	0xd6	; 0xd6 <M_U8_I2C_SendSlaveAddressWithWrite>
 	M_U8_I2C_Write(0x00);					
   7a:	80 e0       	ldi	r24, 0x00	; 0
-  7c:	0e 94 5b 00 	call	0xb6	; 0xb6 <M_U8_I2C_Write>
+  7c:	0e 94 74 00 	call	0xe8	; 0xe8 <M_U8_I2C_Write>
 	M_Void_I2C_STOP();						
-  80:	0e 94 64 00 	call	0xc8	; 0xc8 <M_Void_I2C_STOP>
+  80:	0e 94 7d 00 	call	0xfa	; 0xfa <M_Void_I2C_STOP>
   84:	ff cf       	rjmp	.-2      	; 0x84 <main+0x18>
 
 00000086 <M_Void_I2C_Init>:
@@ -93,59 +93,123 @@ u8 M_U8_I2C_ReadWithNack(){
     while(!(TWCR_REG&(1<<TWINT)));			/* Wait until TWI finish its current job */
     return TWDR_REG;					/* Return received data */
 }
-  86:	11 b8       	out	0x01, r1	; 1
-  88:	80 e2       	ldi	r24, 0x20	; 32
-  8a:	80 b9       	out	0x00, r24	; 0
-  8c:	08 95       	ret
+  86:	81 b1       	in	r24, 0x01	; 1
+  88:	8e 7f       	andi	r24, 0xFE	; 254
+  8a:	81 b9       	out	0x01, r24	; 1
+  8c:	81 b1       	in	r24, 0x01	; 1
+  8e:	8d 7f       	andi	r24, 0xFD	; 253
+  90:	81 b9       	out	0x01, r24	; 1
+  92:	81 b1       	in	r24, 0x01	; 1
+  94:	90 e0       	ldi	r25, 0x00	; 0
+  96:	88 0f       	add	r24, r24
+  98:	99 1f       	adc	r25, r25
+  9a:	22 e0       	ldi	r18, 0x02	; 2
+  9c:	30 e0       	ldi	r19, 0x00	; 0
+  9e:	02 c0       	rjmp	.+4      	; 0xa4 <M_Void_I2C_Init+0x1e>
+  a0:	22 0f       	add	r18, r18
+  a2:	33 1f       	adc	r19, r19
+  a4:	8a 95       	dec	r24
+  a6:	e2 f7       	brpl	.-8      	; 0xa0 <M_Void_I2C_Init+0x1a>
+  a8:	03 2e       	mov	r0, r19
+  aa:	00 0c       	add	r0, r0
+  ac:	44 0b       	sbc	r20, r20
+  ae:	55 0b       	sbc	r21, r21
+  b0:	60 e4       	ldi	r22, 0x40	; 64
+  b2:	70 e0       	ldi	r23, 0x00	; 0
+  b4:	80 e0       	ldi	r24, 0x00	; 0
+  b6:	90 e0       	ldi	r25, 0x00	; 0
+  b8:	0e 94 83 00 	call	0x106	; 0x106 <__udivmodsi4>
+  bc:	20 b9       	out	0x00, r18	; 0
+  be:	08 95       	ret
 
-0000008e <M_U8_I2C_Start>:
-  8e:	84 ea       	ldi	r24, 0xA4	; 164
-  90:	86 bf       	out	0x36, r24	; 54
-  92:	06 b6       	in	r0, 0x36	; 54
-  94:	07 fe       	sbrs	r0, 7
-  96:	fd cf       	rjmp	.-6      	; 0x92 <M_U8_I2C_Start+0x4>
-  98:	81 b1       	in	r24, 0x01	; 1
-  9a:	88 7f       	andi	r24, 0xF8	; 248
-  9c:	88 30       	cpi	r24, 0x08	; 8
-  9e:	09 f0       	breq	.+2      	; 0xa2 <M_U8_I2C_Start+0x14>
-  a0:	80 e0       	ldi	r24, 0x00	; 0
-  a2:	08 95       	ret
+000000c0 <M_U8_I2C_Start>:
+  c0:	84 ea       	ldi	r24, 0xA4	; 164
+  c2:	86 bf       	out	0x36, r24	; 54
+  c4:	06 b6       	in	r0, 0x36	; 54
+  c6:	07 fe       	sbrs	r0, 7
+  c8:	fd cf       	rjmp	.-6      	; 0xc4 <M_U8_I2C_Start+0x4>
+  ca:	81 b1       	in	r24, 0x01	; 1
+  cc:	88 7f       	andi	r24, 0xF8	; 248
+  ce:	88 30       	cpi	r24, 0x08	; 8
+  d0:	09 f0       	breq	.+2      	; 0xd4 <M_U8_I2C_Start+0x14>
+  d2:	80 e0       	ldi	r24, 0x00	; 0
+  d4:	08 95       	ret
 
-000000a4 <M_U8_I2C_SendSlaveAddressWithWrite>:
-  a4:	83 b9       	out	0x03, r24	; 3
-  a6:	84 e8       	ldi	r24, 0x84	; 132
-  a8:	86 bf       	out	0x36, r24	; 54
-  aa:	06 b6       	in	r0, 0x36	; 54
-  ac:	07 fe       	sbrs	r0, 7
-  ae:	fd cf       	rjmp	.-6      	; 0xaa <M_U8_I2C_SendSlaveAddressWithWrite+0x6>
-  b0:	81 b1       	in	r24, 0x01	; 1
-  b2:	88 7f       	andi	r24, 0xF8	; 248
-  b4:	08 95       	ret
+000000d6 <M_U8_I2C_SendSlaveAddressWithWrite>:
+  d6:	83 b9       	out	0x03, r24	; 3
+  d8:	84 e8       	ldi	r24, 0x84	; 132
+  da:	86 bf       	out	0x36, r24	; 54
+  dc:	06 b6       	in	r0, 0x36	; 54
+  de:	07 fe       	sbrs	r0, 7
+  e0:	fd cf       	rjmp	.-6      	; 0xdc <M_U8_I2C_SendSlaveAddressWithWrite+0x6>
+  e2:	81 b1       	in	r24, 0x01	; 1
+  e4:	88 7f       	andi	r24, 0xF8	; 248
+  e6:	08 95       	ret
 
-000000b6 <M_U8_I2C_Write>:
-  b6:	83 b9       	out	0x03, r24	; 3
-  b8:	84 e8       	ldi	r24, 0x84	; 132
-  ba:	86 bf       	out	0x36, r24	; 54
-  bc:	06 b6       	in	r0, 0x36	; 54
-  be:	07 fe       	sbrs	r0, 7
-  c0:	fd cf       	rjmp	.-6      	; 0xbc <M_U8_I2C_Write+0x6>
-  c2:	81 b1       	in	r24, 0x01	; 1
-  c4:	88 7f       	andi	r24, 0xF8	; 248
-  c6:	08 95       	ret
+000000e8 <M_U8_I2C_Write>:
+  e8:	83 b9       	out	0x03, r24	; 3
+  ea:	84 e8       	ldi	r24, 0x84	; 132
+  ec:	86 bf       	out	0x36, r24	; 54
+  ee:	06 b6       	in	r0, 0x36	; 54
+  f0:	07 fe       	sbrs	r0, 7
+  f2:	fd cf       	rjmp	.-6      	; 0xee <M_U8_I2C_Write+0x6>
+  f4:	81 b1       	in	r24, 0x01	; 1
+  f6:	88 7f       	andi	r24, 0xF8	; 248
+  f8:	08 95       	ret
 
-000000c8 <M_Void_I2C_STOP>:
+000000fa <M_Void_I2C_STOP>:
 void M_Void_I2C_STOP(){
     TWCR_REG=(1<<TWSTO)|(1<<TWINT)|(1<<TWEN);/* Enable TWI, generate stop */
-  c8:	84 e9       	ldi	r24, 0x94	; 148
-  ca:	86 bf       	out	0x36, r24	; 54
+  fa:	84 e9       	ldi	r24, 0x94	; 148
+  fc:	86 bf       	out	0x36, r24	; 54
     while(TWCR_REG&(1<<TWSTO));				 /* Wait until stop condition execution */
-  cc:	06 b6       	in	r0, 0x36	; 54
-  ce:	04 fc       	sbrc	r0, 4
-  d0:	fd cf       	rjmp	.-6      	; 0xcc <M_Void_I2C_STOP+0x4>
-  d2:	08 95       	ret
+  fe:	06 b6       	in	r0, 0x36	; 54
+ 100:	04 fc       	sbrc	r0, 4
+ 102:	fd cf       	rjmp	.-6      	; 0xfe <M_Void_I2C_STOP+0x4>
+ 104:	08 95       	ret
 
-000000d4 <_exit>:
-  d4:	f8 94       	cli
+00000106 <__udivmodsi4>:
+ 106:	a1 e2       	ldi	r26, 0x21	; 33
+ 108:	1a 2e       	mov	r1, r26
+ 10a:	aa 1b       	sub	r26, r26
+ 10c:	bb 1b       	sub	r27, r27
+ 10e:	fd 01       	movw	r30, r26
+ 110:	0d c0       	rjmp	.+26     	; 0x12c <__udivmodsi4_ep>
 
-000000d6 <__stop_program>:
-  d6:	ff cf       	rjmp	.-2      	; 0xd6 <__stop_program>
+00000112 <__udivmodsi4_loop>:
+ 112:	aa 1f       	adc	r26, r26
+ 114:	bb 1f       	adc	r27, r27
+ 116:	ee 1f       	adc	r30, r30
+ 118:	ff 1f       	adc	r31, r31
+ 11a:	a2 17       	cp	r26, r18
+ 11c:	b3 07       	cpc	r27, r19
+ 11e:	e4 07       	cpc	r30, r20
+ 120:	f5 07       	cpc	r31, r21
+ 122:	20 f0       	brcs	.+8      	; 0x12c <__udivmodsi4_ep>
+ 124:	a2 1b       	sub	r26, r18
+ 126:	b3 0b       	sbc	r27, r19
+ 128:	e4 0b       	sbc	r30, r20
+ 12a:	f5 0b       	sbc	r31, r21
+
+0000012c <__udivmodsi4_ep>:
+ 12c:	66 1f       	adc	r22, r22
+ 12e:	77 1f       	adc	r23, r23
+ 130:	88 1f       	adc	r24, r24
+ 132:	99 1f       	adc	r25, r25
+ 134:	1a 94       	dec	r1
+ 136:	69 f7       	brne	.-38     	; 0x112 <__udivmodsi4_loop>
+ 138:	60 95       	com	r22
+ 13a:	70 95       	com	r23
+ 13c:	80 95       	com	r24
+ 13e:	90 95       	com	r25
+ 140:	9b 01       	movw	r18, r22
+ 142:	ac 01       	movw	r20, r24
+ 144:	bd 01       	movw	r22, r26
+ 146:	cf 01       	movw	r24, r30
+ 148:	08 95       	ret
+
+0000014a <_exit>:
+ 14a:	f8 94       	cli
+
+0000014c <__stop_program>:
+ 14c:	ff cf       	rjmp	.-2      	; 0x14c <__stop_program>
