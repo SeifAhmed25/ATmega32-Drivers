@@ -3,31 +3,31 @@ R503_ATmegaDriver.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         00000a12  00000000  00000000  00000094  2**1
+  0 .text         00000a16  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .data         00000046  00800060  00000a12  00000aa6  2**0
+  1 .data         00000046  00800060  00000a16  00000aaa  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  2 .bss          0000000f  008000a6  008000a6  00000aec  2**0
+  2 .bss          0000000f  008000a6  008000a6  00000af0  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  00000aec  2**0
+  3 .comment      00000030  00000000  00000000  00000af0  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000b1c  2**2
+  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000b20  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 00000188  00000000  00000000  00000b58  2**0
+  5 .debug_aranges 00000188  00000000  00000000  00000b5c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00002287  00000000  00000000  00000ce0  2**0
+  6 .debug_info   0000228a  00000000  00000000  00000ce4  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000afb  00000000  00000000  00002f67  2**0
+  7 .debug_abbrev 00000b0a  00000000  00000000  00002f6e  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00001049  00000000  00000000  00003a62  2**0
+  8 .debug_line   00001049  00000000  00000000  00003a78  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  00000378  00000000  00000000  00004aac  2**2
+  9 .debug_frame  00000378  00000000  00000000  00004ac4  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000874  00000000  00000000  00004e24  2**0
+ 10 .debug_str    00000887  00000000  00000000  00004e3c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000e64  00000000  00000000  00005698  2**0
+ 11 .debug_loc    00000e74  00000000  00000000  000056c3  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000138  00000000  00000000  000064fc  2**0
+ 12 .debug_ranges 00000138  00000000  00000000  00006537  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -46,7 +46,7 @@ Disassembly of section .text:
   28:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
   2c:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
   30:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
-  34:	0c 94 df 04 	jmp	0x9be	; 0x9be <__vector_13>
+  34:	0c 94 e1 04 	jmp	0x9c2	; 0x9c2 <__vector_13>
   38:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
   3c:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
   40:	0c 94 47 00 	jmp	0x8e	; 0x8e <__bad_interrupt>
@@ -67,7 +67,7 @@ Disassembly of section .text:
   60:	10 e0       	ldi	r17, 0x00	; 0
   62:	a0 e6       	ldi	r26, 0x60	; 96
   64:	b0 e0       	ldi	r27, 0x00	; 0
-  66:	e2 e1       	ldi	r30, 0x12	; 18
+  66:	e6 e1       	ldi	r30, 0x16	; 22
   68:	fa e0       	ldi	r31, 0x0A	; 10
   6a:	02 c0       	rjmp	.+4      	; 0x70 <__do_copy_data+0x10>
   6c:	05 90       	lpm	r0, Z+
@@ -90,7 +90,7 @@ Disassembly of section .text:
   82:	b2 07       	cpc	r27, r18
   84:	e1 f7       	brne	.-8      	; 0x7e <.do_clear_bss_loop>
   86:	0e 94 49 00 	call	0x92	; 0x92 <main>
-  8a:	0c 94 07 05 	jmp	0xa0e	; 0xa0e <_exit>
+  8a:	0c 94 09 05 	jmp	0xa12	; 0xa12 <_exit>
 
 0000008e <__bad_interrupt>:
   8e:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
@@ -104,11 +104,12 @@ int main(void)
 	H_Lcd_Void_LCDInit();
   92:	0e 94 52 01 	call	0x2a4	; 0x2a4 <H_Lcd_Void_LCDInit>
 	UART_Init(); 
-  96:	0e 94 c4 04 	call	0x988	; 0x988 <UART_Init>
+  96:	0e 94 c6 04 	call	0x98c	; 0x98c <UART_Init>
 	UART_receiveByteAsynchCallBack(StoreAckBytes);   
-  9a:	80 ef       	ldi	r24, 0xF0	; 240
+  9a:	82 ef       	ldi	r24, 0xF2	; 242
   9c:	92 e0       	ldi	r25, 0x02	; 2
-  9e:	0e 94 da 04 	call	0x9b4	; 0x9b4 <UART_receiveByteAsynchCallBack>
+  9e:	0e 94 dc 04 	call	0x9b8	; 0x9b8 <UART_receiveByteAsynchCallBack>
+	u8 FingerPrintAddress = 10;  
 	sei ();
   a2:	78 94       	sei
 	/*******************************************		Starting with an AURA Wink (;				********************/
@@ -139,10 +140,10 @@ int main(void)
   c8:	00 00       	nop
 	_delay_ms(4000); /*Delay to get the finger scan*/ 
 	/******************************************		Here we are Setting a New Finger Print		********************/ 
-	FingerPS_SetNewFingerPrint (0x0004); 
-  ca:	84 e0       	ldi	r24, 0x04	; 4
+	FingerPS_SetNewFingerPrint (FingerPrintAddress); 
+  ca:	8a e0       	ldi	r24, 0x0A	; 10
   cc:	90 e0       	ldi	r25, 0x00	; 0
-  ce:	0e 94 0a 03 	call	0x614	; 0x614 <FingerPS_SetNewFingerPrint>
+  ce:	0e 94 0c 03 	call	0x618	; 0x618 <FingerPS_SetNewFingerPrint>
 	H_Lcd_Void_LCDClear(); 
   d2:	0e 94 90 01 	call	0x320	; 0x320 <H_Lcd_Void_LCDClear>
 	H_Lcd_Void_LCDWriteString((u8*)"NEW FINGER SAVED");
@@ -166,10 +167,10 @@ int main(void)
   f4:	85 e8       	ldi	r24, 0x85	; 133
   f6:	90 e0       	ldi	r25, 0x00	; 0
   f8:	0e 94 7d 01 	call	0x2fa	; 0x2fa <H_Lcd_Void_LCDWriteString>
-	if (FingerPS_CheckOneToOneMatch(0x0004) == MATCHED){ 
-  fc:	84 e0       	ldi	r24, 0x04	; 4
+	if (FingerPS_CheckOneToOneMatch(FingerPrintAddress) == MATCHED){ 
+  fc:	8a e0       	ldi	r24, 0x0A	; 10
   fe:	90 e0       	ldi	r25, 0x00	; 0
- 100:	0e 94 6c 03 	call	0x6d8	; 0x6d8 <FingerPS_CheckOneToOneMatch>
+ 100:	0e 94 6e 03 	call	0x6dc	; 0x6dc <FingerPS_CheckOneToOneMatch>
  104:	81 30       	cpi	r24, 0x01	; 1
  106:	39 f4       	brne	.+14     	; 0x116 <main+0x84>
 			H_Lcd_Void_LCDClear();
@@ -200,31 +201,31 @@ int main(void)
  126:	c8 2f       	mov	r28, r24
  128:	61 e0       	ldi	r22, 0x01	; 1
  12a:	8d e0       	ldi	r24, 0x0D	; 13
- 12c:	0e 94 3b 04 	call	0x876	; 0x876 <M_DIO_Void_SetPinValue>
+ 12c:	0e 94 3d 04 	call	0x87a	; 0x87a <M_DIO_Void_SetPinValue>
  130:	c4 fb       	bst	r28, 4
  132:	66 27       	eor	r22, r22
  134:	60 f9       	bld	r22, 0
  136:	84 e1       	ldi	r24, 0x14	; 20
- 138:	0e 94 3b 04 	call	0x876	; 0x876 <M_DIO_Void_SetPinValue>
+ 138:	0e 94 3d 04 	call	0x87a	; 0x87a <M_DIO_Void_SetPinValue>
  13c:	c5 fb       	bst	r28, 5
  13e:	66 27       	eor	r22, r22
  140:	60 f9       	bld	r22, 0
  142:	85 e1       	ldi	r24, 0x15	; 21
- 144:	0e 94 3b 04 	call	0x876	; 0x876 <M_DIO_Void_SetPinValue>
+ 144:	0e 94 3d 04 	call	0x87a	; 0x87a <M_DIO_Void_SetPinValue>
  148:	c6 fb       	bst	r28, 6
  14a:	66 27       	eor	r22, r22
  14c:	60 f9       	bld	r22, 0
  14e:	86 e1       	ldi	r24, 0x16	; 22
- 150:	0e 94 3b 04 	call	0x876	; 0x876 <M_DIO_Void_SetPinValue>
+ 150:	0e 94 3d 04 	call	0x87a	; 0x87a <M_DIO_Void_SetPinValue>
  154:	6c 2f       	mov	r22, r28
  156:	66 1f       	adc	r22, r22
  158:	66 27       	eor	r22, r22
  15a:	66 1f       	adc	r22, r22
  15c:	88 e1       	ldi	r24, 0x18	; 24
- 15e:	0e 94 3b 04 	call	0x876	; 0x876 <M_DIO_Void_SetPinValue>
+ 15e:	0e 94 3d 04 	call	0x87a	; 0x87a <M_DIO_Void_SetPinValue>
  162:	61 e0       	ldi	r22, 0x01	; 1
  164:	8c e0       	ldi	r24, 0x0C	; 12
- 166:	0e 94 3b 04 	call	0x876	; 0x876 <M_DIO_Void_SetPinValue>
+ 166:	0e 94 3d 04 	call	0x87a	; 0x87a <M_DIO_Void_SetPinValue>
  16a:	8f e9       	ldi	r24, 0x9F	; 159
  16c:	9f e0       	ldi	r25, 0x0F	; 15
  16e:	01 97       	sbiw	r24, 0x01	; 1
@@ -233,7 +234,7 @@ int main(void)
  174:	00 00       	nop
  176:	60 e0       	ldi	r22, 0x00	; 0
  178:	8c e0       	ldi	r24, 0x0C	; 12
- 17a:	0e 94 3b 04 	call	0x876	; 0x876 <M_DIO_Void_SetPinValue>
+ 17a:	0e 94 3d 04 	call	0x87a	; 0x87a <M_DIO_Void_SetPinValue>
  17e:	8f e9       	ldi	r24, 0x9F	; 159
  180:	9f e0       	ldi	r25, 0x0F	; 15
  182:	01 97       	sbiw	r24, 0x01	; 1
@@ -243,25 +244,25 @@ int main(void)
  18a:	6c 2f       	mov	r22, r28
  18c:	61 70       	andi	r22, 0x01	; 1
  18e:	84 e1       	ldi	r24, 0x14	; 20
- 190:	0e 94 3b 04 	call	0x876	; 0x876 <M_DIO_Void_SetPinValue>
+ 190:	0e 94 3d 04 	call	0x87a	; 0x87a <M_DIO_Void_SetPinValue>
  194:	c1 fb       	bst	r28, 1
  196:	66 27       	eor	r22, r22
  198:	60 f9       	bld	r22, 0
  19a:	85 e1       	ldi	r24, 0x15	; 21
- 19c:	0e 94 3b 04 	call	0x876	; 0x876 <M_DIO_Void_SetPinValue>
+ 19c:	0e 94 3d 04 	call	0x87a	; 0x87a <M_DIO_Void_SetPinValue>
  1a0:	c2 fb       	bst	r28, 2
  1a2:	66 27       	eor	r22, r22
  1a4:	60 f9       	bld	r22, 0
  1a6:	86 e1       	ldi	r24, 0x16	; 22
- 1a8:	0e 94 3b 04 	call	0x876	; 0x876 <M_DIO_Void_SetPinValue>
+ 1a8:	0e 94 3d 04 	call	0x87a	; 0x87a <M_DIO_Void_SetPinValue>
  1ac:	c3 fb       	bst	r28, 3
  1ae:	66 27       	eor	r22, r22
  1b0:	60 f9       	bld	r22, 0
  1b2:	88 e1       	ldi	r24, 0x18	; 24
- 1b4:	0e 94 3b 04 	call	0x876	; 0x876 <M_DIO_Void_SetPinValue>
+ 1b4:	0e 94 3d 04 	call	0x87a	; 0x87a <M_DIO_Void_SetPinValue>
  1b8:	61 e0       	ldi	r22, 0x01	; 1
  1ba:	8c e0       	ldi	r24, 0x0C	; 12
- 1bc:	0e 94 3b 04 	call	0x876	; 0x876 <M_DIO_Void_SetPinValue>
+ 1bc:	0e 94 3d 04 	call	0x87a	; 0x87a <M_DIO_Void_SetPinValue>
  1c0:	8f e9       	ldi	r24, 0x9F	; 159
  1c2:	9f e0       	ldi	r25, 0x0F	; 15
  1c4:	01 97       	sbiw	r24, 0x01	; 1
@@ -270,7 +271,7 @@ int main(void)
  1ca:	00 00       	nop
  1cc:	60 e0       	ldi	r22, 0x00	; 0
  1ce:	8c e0       	ldi	r24, 0x0C	; 12
- 1d0:	0e 94 3b 04 	call	0x876	; 0x876 <M_DIO_Void_SetPinValue>
+ 1d0:	0e 94 3d 04 	call	0x87a	; 0x87a <M_DIO_Void_SetPinValue>
  1d4:	8f e1       	ldi	r24, 0x1F	; 31
  1d6:	9e e4       	ldi	r25, 0x4E	; 78
  1d8:	01 97       	sbiw	r24, 0x01	; 1
@@ -285,31 +286,31 @@ int main(void)
  1e6:	c8 2f       	mov	r28, r24
  1e8:	60 e0       	ldi	r22, 0x00	; 0
  1ea:	8d e0       	ldi	r24, 0x0D	; 13
- 1ec:	0e 94 3b 04 	call	0x876	; 0x876 <M_DIO_Void_SetPinValue>
+ 1ec:	0e 94 3d 04 	call	0x87a	; 0x87a <M_DIO_Void_SetPinValue>
  1f0:	c4 fb       	bst	r28, 4
  1f2:	66 27       	eor	r22, r22
  1f4:	60 f9       	bld	r22, 0
  1f6:	84 e1       	ldi	r24, 0x14	; 20
- 1f8:	0e 94 3b 04 	call	0x876	; 0x876 <M_DIO_Void_SetPinValue>
+ 1f8:	0e 94 3d 04 	call	0x87a	; 0x87a <M_DIO_Void_SetPinValue>
  1fc:	c5 fb       	bst	r28, 5
  1fe:	66 27       	eor	r22, r22
  200:	60 f9       	bld	r22, 0
  202:	85 e1       	ldi	r24, 0x15	; 21
- 204:	0e 94 3b 04 	call	0x876	; 0x876 <M_DIO_Void_SetPinValue>
+ 204:	0e 94 3d 04 	call	0x87a	; 0x87a <M_DIO_Void_SetPinValue>
  208:	c6 fb       	bst	r28, 6
  20a:	66 27       	eor	r22, r22
  20c:	60 f9       	bld	r22, 0
  20e:	86 e1       	ldi	r24, 0x16	; 22
- 210:	0e 94 3b 04 	call	0x876	; 0x876 <M_DIO_Void_SetPinValue>
+ 210:	0e 94 3d 04 	call	0x87a	; 0x87a <M_DIO_Void_SetPinValue>
  214:	6c 2f       	mov	r22, r28
  216:	66 1f       	adc	r22, r22
  218:	66 27       	eor	r22, r22
  21a:	66 1f       	adc	r22, r22
  21c:	88 e1       	ldi	r24, 0x18	; 24
- 21e:	0e 94 3b 04 	call	0x876	; 0x876 <M_DIO_Void_SetPinValue>
+ 21e:	0e 94 3d 04 	call	0x87a	; 0x87a <M_DIO_Void_SetPinValue>
  222:	61 e0       	ldi	r22, 0x01	; 1
  224:	8c e0       	ldi	r24, 0x0C	; 12
- 226:	0e 94 3b 04 	call	0x876	; 0x876 <M_DIO_Void_SetPinValue>
+ 226:	0e 94 3d 04 	call	0x87a	; 0x87a <M_DIO_Void_SetPinValue>
  22a:	8f e9       	ldi	r24, 0x9F	; 159
  22c:	9f e0       	ldi	r25, 0x0F	; 15
  22e:	01 97       	sbiw	r24, 0x01	; 1
@@ -318,7 +319,7 @@ int main(void)
  234:	00 00       	nop
  236:	60 e0       	ldi	r22, 0x00	; 0
  238:	8c e0       	ldi	r24, 0x0C	; 12
- 23a:	0e 94 3b 04 	call	0x876	; 0x876 <M_DIO_Void_SetPinValue>
+ 23a:	0e 94 3d 04 	call	0x87a	; 0x87a <M_DIO_Void_SetPinValue>
  23e:	8f e9       	ldi	r24, 0x9F	; 159
  240:	9f e0       	ldi	r25, 0x0F	; 15
  242:	01 97       	sbiw	r24, 0x01	; 1
@@ -328,25 +329,25 @@ int main(void)
  24a:	6c 2f       	mov	r22, r28
  24c:	61 70       	andi	r22, 0x01	; 1
  24e:	84 e1       	ldi	r24, 0x14	; 20
- 250:	0e 94 3b 04 	call	0x876	; 0x876 <M_DIO_Void_SetPinValue>
+ 250:	0e 94 3d 04 	call	0x87a	; 0x87a <M_DIO_Void_SetPinValue>
  254:	c1 fb       	bst	r28, 1
  256:	66 27       	eor	r22, r22
  258:	60 f9       	bld	r22, 0
  25a:	85 e1       	ldi	r24, 0x15	; 21
- 25c:	0e 94 3b 04 	call	0x876	; 0x876 <M_DIO_Void_SetPinValue>
+ 25c:	0e 94 3d 04 	call	0x87a	; 0x87a <M_DIO_Void_SetPinValue>
  260:	c2 fb       	bst	r28, 2
  262:	66 27       	eor	r22, r22
  264:	60 f9       	bld	r22, 0
  266:	86 e1       	ldi	r24, 0x16	; 22
- 268:	0e 94 3b 04 	call	0x876	; 0x876 <M_DIO_Void_SetPinValue>
+ 268:	0e 94 3d 04 	call	0x87a	; 0x87a <M_DIO_Void_SetPinValue>
  26c:	c3 fb       	bst	r28, 3
  26e:	66 27       	eor	r22, r22
  270:	60 f9       	bld	r22, 0
  272:	88 e1       	ldi	r24, 0x18	; 24
- 274:	0e 94 3b 04 	call	0x876	; 0x876 <M_DIO_Void_SetPinValue>
+ 274:	0e 94 3d 04 	call	0x87a	; 0x87a <M_DIO_Void_SetPinValue>
  278:	61 e0       	ldi	r22, 0x01	; 1
  27a:	8c e0       	ldi	r24, 0x0C	; 12
- 27c:	0e 94 3b 04 	call	0x876	; 0x876 <M_DIO_Void_SetPinValue>
+ 27c:	0e 94 3d 04 	call	0x87a	; 0x87a <M_DIO_Void_SetPinValue>
  280:	8f e9       	ldi	r24, 0x9F	; 159
  282:	9f e0       	ldi	r25, 0x0F	; 15
  284:	01 97       	sbiw	r24, 0x01	; 1
@@ -355,7 +356,7 @@ int main(void)
  28a:	00 00       	nop
  28c:	60 e0       	ldi	r22, 0x00	; 0
  28e:	8c e0       	ldi	r24, 0x0C	; 12
- 290:	0e 94 3b 04 	call	0x876	; 0x876 <M_DIO_Void_SetPinValue>
+ 290:	0e 94 3d 04 	call	0x87a	; 0x87a <M_DIO_Void_SetPinValue>
  294:	8f e1       	ldi	r24, 0x1F	; 31
  296:	9e e4       	ldi	r25, 0x4E	; 78
  298:	01 97       	sbiw	r24, 0x01	; 1
@@ -368,22 +369,22 @@ int main(void)
 000002a4 <H_Lcd_Void_LCDInit>:
  2a4:	61 e0       	ldi	r22, 0x01	; 1
  2a6:	84 e1       	ldi	r24, 0x14	; 20
- 2a8:	0e 94 b2 03 	call	0x764	; 0x764 <M_DIO_Void_SetPinDirection>
+ 2a8:	0e 94 b4 03 	call	0x768	; 0x768 <M_DIO_Void_SetPinDirection>
  2ac:	61 e0       	ldi	r22, 0x01	; 1
  2ae:	85 e1       	ldi	r24, 0x15	; 21
- 2b0:	0e 94 b2 03 	call	0x764	; 0x764 <M_DIO_Void_SetPinDirection>
+ 2b0:	0e 94 b4 03 	call	0x768	; 0x768 <M_DIO_Void_SetPinDirection>
  2b4:	61 e0       	ldi	r22, 0x01	; 1
  2b6:	86 e1       	ldi	r24, 0x16	; 22
- 2b8:	0e 94 b2 03 	call	0x764	; 0x764 <M_DIO_Void_SetPinDirection>
+ 2b8:	0e 94 b4 03 	call	0x768	; 0x768 <M_DIO_Void_SetPinDirection>
  2bc:	61 e0       	ldi	r22, 0x01	; 1
  2be:	88 e1       	ldi	r24, 0x18	; 24
- 2c0:	0e 94 b2 03 	call	0x764	; 0x764 <M_DIO_Void_SetPinDirection>
+ 2c0:	0e 94 b4 03 	call	0x768	; 0x768 <M_DIO_Void_SetPinDirection>
  2c4:	61 e0       	ldi	r22, 0x01	; 1
  2c6:	8d e0       	ldi	r24, 0x0D	; 13
- 2c8:	0e 94 b2 03 	call	0x764	; 0x764 <M_DIO_Void_SetPinDirection>
+ 2c8:	0e 94 b4 03 	call	0x768	; 0x768 <M_DIO_Void_SetPinDirection>
  2cc:	61 e0       	ldi	r22, 0x01	; 1
  2ce:	8c e0       	ldi	r24, 0x0C	; 12
- 2d0:	0e 94 b2 03 	call	0x764	; 0x764 <M_DIO_Void_SetPinDirection>
+ 2d0:	0e 94 b4 03 	call	0x768	; 0x768 <M_DIO_Void_SetPinDirection>
  2d4:	83 e3       	ldi	r24, 0x33	; 51
  2d6:	0e 94 f2 00 	call	0x1e4	; 0x1e4 <H_Lcd_Void_LCDWriteCommand>
  2da:	82 e3       	ldi	r24, 0x32	; 50
@@ -478,23 +479,23 @@ void H_Lcd_Void_LCDGoTo(u8 Copy_U8_Row,u8 Copy_U8_Col)
  36e:	c6 2f       	mov	r28, r22
  370:	d7 2f       	mov	r29, r23
  372:	8f ee       	ldi	r24, 0xEF	; 239
- 374:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 374:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  378:	81 e0       	ldi	r24, 0x01	; 1
- 37a:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 37a:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  37e:	8f ef       	ldi	r24, 0xFF	; 255
- 380:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 380:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  384:	8f ef       	ldi	r24, 0xFF	; 255
- 386:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 386:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  38a:	8f ef       	ldi	r24, 0xFF	; 255
- 38c:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 38c:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  390:	8f ef       	ldi	r24, 0xFF	; 255
- 392:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 392:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  396:	81 2f       	mov	r24, r17
- 398:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 398:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  39c:	8d 2f       	mov	r24, r29
- 39e:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 39e:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  3a2:	8c 2f       	mov	r24, r28
- 3a4:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 3a4:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  3a8:	df 91       	pop	r29
  3aa:	cf 91       	pop	r28
  3ac:	1f 91       	pop	r17
@@ -506,19 +507,19 @@ void H_Lcd_Void_LCDGoTo(u8 Copy_U8_Row,u8 Copy_U8_Col)
  3b4:	81 e0       	ldi	r24, 0x01	; 1
  3b6:	0e 94 b3 01 	call	0x366	; 0x366 <FingerP_send>
  3ba:	85 e3       	ldi	r24, 0x35	; 53
- 3bc:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 3bc:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  3c0:	82 e0       	ldi	r24, 0x02	; 2
- 3c2:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 3c2:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  3c6:	8f e0       	ldi	r24, 0x0F	; 15
- 3c8:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 3c8:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  3cc:	83 e0       	ldi	r24, 0x03	; 3
- 3ce:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 3ce:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  3d2:	81 e0       	ldi	r24, 0x01	; 1
- 3d4:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 3d4:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  3d8:	80 e0       	ldi	r24, 0x00	; 0
- 3da:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 3da:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  3de:	82 e5       	ldi	r24, 0x52	; 82
- 3e0:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 3e0:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  3e4:	08 95       	ret
 
 000003e6 <FingerPS_genImg>:
@@ -527,96 +528,96 @@ void H_Lcd_Void_LCDGoTo(u8 Copy_U8_Row,u8 Copy_U8_Col)
  3ea:	81 e0       	ldi	r24, 0x01	; 1
  3ec:	0e 94 b3 01 	call	0x366	; 0x366 <FingerP_send>
  3f0:	81 e0       	ldi	r24, 0x01	; 1
- 3f2:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 3f2:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  3f6:	80 e0       	ldi	r24, 0x00	; 0
- 3f8:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 3f8:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  3fc:	85 e0       	ldi	r24, 0x05	; 5
- 3fe:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 3fe:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  402:	08 95       	ret
 
 00000404 <FingerPS_convertImg1CharFile>:
  404:	8f ee       	ldi	r24, 0xEF	; 239
- 406:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 406:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  40a:	81 e0       	ldi	r24, 0x01	; 1
- 40c:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 40c:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  410:	8f ef       	ldi	r24, 0xFF	; 255
- 412:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 412:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  416:	8f ef       	ldi	r24, 0xFF	; 255
- 418:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 418:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  41c:	8f ef       	ldi	r24, 0xFF	; 255
- 41e:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 41e:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  422:	8f ef       	ldi	r24, 0xFF	; 255
- 424:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 424:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  428:	81 e0       	ldi	r24, 0x01	; 1
- 42a:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 42a:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  42e:	80 e0       	ldi	r24, 0x00	; 0
- 430:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 430:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  434:	84 e0       	ldi	r24, 0x04	; 4
- 436:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 436:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  43a:	82 e0       	ldi	r24, 0x02	; 2
- 43c:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 43c:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  440:	81 e0       	ldi	r24, 0x01	; 1
- 442:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 442:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  446:	80 e0       	ldi	r24, 0x00	; 0
- 448:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 448:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  44c:	88 e0       	ldi	r24, 0x08	; 8
- 44e:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 44e:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  452:	08 95       	ret
 
 00000454 <FingerPS_convertImg2CharFile>:
  454:	8f ee       	ldi	r24, 0xEF	; 239
- 456:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 456:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  45a:	81 e0       	ldi	r24, 0x01	; 1
- 45c:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 45c:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  460:	8f ef       	ldi	r24, 0xFF	; 255
- 462:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 462:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  466:	8f ef       	ldi	r24, 0xFF	; 255
- 468:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 468:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  46c:	8f ef       	ldi	r24, 0xFF	; 255
- 46e:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 46e:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  472:	8f ef       	ldi	r24, 0xFF	; 255
- 474:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 474:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  478:	81 e0       	ldi	r24, 0x01	; 1
- 47a:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 47a:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  47e:	80 e0       	ldi	r24, 0x00	; 0
- 480:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 480:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  484:	84 e0       	ldi	r24, 0x04	; 4
- 486:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 486:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  48a:	82 e0       	ldi	r24, 0x02	; 2
- 48c:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 48c:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  490:	82 e0       	ldi	r24, 0x02	; 2
- 492:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 492:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  496:	80 e0       	ldi	r24, 0x00	; 0
- 498:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 498:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  49c:	89 e0       	ldi	r24, 0x09	; 9
- 49e:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 49e:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  4a2:	08 95       	ret
 
 000004a4 <FingerPS_genTemplate>:
  4a4:	8f ee       	ldi	r24, 0xEF	; 239
- 4a6:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 4a6:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  4aa:	81 e0       	ldi	r24, 0x01	; 1
- 4ac:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 4ac:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  4b0:	8f ef       	ldi	r24, 0xFF	; 255
- 4b2:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 4b2:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  4b6:	8f ef       	ldi	r24, 0xFF	; 255
- 4b8:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 4b8:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  4bc:	8f ef       	ldi	r24, 0xFF	; 255
- 4be:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 4be:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  4c2:	8f ef       	ldi	r24, 0xFF	; 255
- 4c4:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 4c4:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  4c8:	81 e0       	ldi	r24, 0x01	; 1
- 4ca:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 4ca:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  4ce:	80 e0       	ldi	r24, 0x00	; 0
- 4d0:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 4d0:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  4d4:	83 e0       	ldi	r24, 0x03	; 3
- 4d6:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 4d6:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  4da:	85 e0       	ldi	r24, 0x05	; 5
- 4dc:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 4dc:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  4e0:	80 e0       	ldi	r24, 0x00	; 0
- 4e2:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 4e2:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  4e6:	89 e0       	ldi	r24, 0x09	; 9
- 4e8:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 4e8:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  4ec:	08 95       	ret
 
 000004ee <FingerPS_strTemplate>:
@@ -628,20 +629,20 @@ void H_Lcd_Void_LCDGoTo(u8 Copy_U8_Row,u8 Copy_U8_Col)
  4f8:	81 e0       	ldi	r24, 0x01	; 1
  4fa:	0e 94 b3 01 	call	0x366	; 0x366 <FingerP_send>
  4fe:	86 e0       	ldi	r24, 0x06	; 6
- 500:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 500:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  504:	81 e0       	ldi	r24, 0x01	; 1
- 506:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 506:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  50a:	8d 2f       	mov	r24, r29
- 50c:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 50c:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  510:	8c 2f       	mov	r24, r28
- 512:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 512:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  516:	ce 01       	movw	r24, r28
  518:	0e 96       	adiw	r24, 0x0e	; 14
  51a:	89 2f       	mov	r24, r25
- 51c:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 51c:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  520:	8c 2f       	mov	r24, r28
  522:	82 5f       	subi	r24, 0xF2	; 242
- 524:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 524:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
  528:	df 91       	pop	r29
  52a:	cf 91       	pop	r28
  52c:	08 95       	ret
@@ -651,777 +652,780 @@ void H_Lcd_Void_LCDGoTo(u8 Copy_U8_Row,u8 Copy_U8_Col)
 void FingerPS_LoadCharFile(u16 address){
  52e:	cf 93       	push	r28
  530:	df 93       	push	r29
- 532:	c8 2f       	mov	r28, r24
- 534:	d9 2f       	mov	r29, r25
+ 532:	ec 01       	movw	r28, r24
 	UART_sendByte(0xef);
- 536:	8f ee       	ldi	r24, 0xEF	; 239
- 538:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 534:	8f ee       	ldi	r24, 0xEF	; 239
+ 536:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
 	UART_sendByte(0x01);
- 53c:	81 e0       	ldi	r24, 0x01	; 1
- 53e:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 53a:	81 e0       	ldi	r24, 0x01	; 1
+ 53c:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
 	UART_sendByte(0xff);
- 542:	8f ef       	ldi	r24, 0xFF	; 255
- 544:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 540:	8f ef       	ldi	r24, 0xFF	; 255
+ 542:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
 	UART_sendByte(0xff);
- 548:	8f ef       	ldi	r24, 0xFF	; 255
- 54a:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 546:	8f ef       	ldi	r24, 0xFF	; 255
+ 548:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
 	UART_sendByte(0xff);
- 54e:	8f ef       	ldi	r24, 0xFF	; 255
- 550:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 54c:	8f ef       	ldi	r24, 0xFF	; 255
+ 54e:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
 	UART_sendByte(0xff);
- 554:	8f ef       	ldi	r24, 0xFF	; 255
- 556:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 552:	8f ef       	ldi	r24, 0xFF	; 255
+ 554:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
 	UART_sendByte(0x01);
- 55a:	81 e0       	ldi	r24, 0x01	; 1
- 55c:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 558:	81 e0       	ldi	r24, 0x01	; 1
+ 55a:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
 	UART_sendByte(0x00);
- 560:	80 e0       	ldi	r24, 0x00	; 0
- 562:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 55e:	80 e0       	ldi	r24, 0x00	; 0
+ 560:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
 	UART_sendByte(0x06);
- 566:	86 e0       	ldi	r24, 0x06	; 6
- 568:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 564:	86 e0       	ldi	r24, 0x06	; 6
+ 566:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
 	UART_sendByte(0x07);
- 56c:	87 e0       	ldi	r24, 0x07	; 7
- 56e:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 56a:	87 e0       	ldi	r24, 0x07	; 7
+ 56c:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
 	UART_sendByte(0x02); /*load in the char file 2*/
- 572:	82 e0       	ldi	r24, 0x02	; 2
- 574:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 570:	82 e0       	ldi	r24, 0x02	; 2
+ 572:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
 	UART_sendByte(address>>ONE_BYTE_SHIFT);
- 578:	8d 2f       	mov	r24, r29
- 57a:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 576:	8d 2f       	mov	r24, r29
+ 578:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
 	UART_sendByte(address>>NO_BYTE_SHIFT);
- 57e:	8c 2f       	mov	r24, r28
- 580:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
-	UART_sendByte(0x00); 
- 584:	80 e0       	ldi	r24, 0x00	; 0
- 586:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
-	UART_sendByte(0x14);
- 58a:	84 e1       	ldi	r24, 0x14	; 20
- 58c:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 57c:	8c 2f       	mov	r24, r28
+ 57e:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
+	UART_sendByte((0x01+0x00+0x06+0x07+0x02+address)>>ONE_BYTE_SHIFT);
+ 582:	ce 01       	movw	r24, r28
+ 584:	40 96       	adiw	r24, 0x10	; 16
+ 586:	89 2f       	mov	r24, r25
+ 588:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
+	UART_sendByte((0x01+0x00+0x06+0x07+0x02+address)>>NO_BYTE_SHIFT);
+ 58c:	8c 2f       	mov	r24, r28
+ 58e:	80 5f       	subi	r24, 0xF0	; 240
+ 590:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
 } 
- 590:	df 91       	pop	r29
- 592:	cf 91       	pop	r28
- 594:	08 95       	ret
+ 594:	df 91       	pop	r29
+ 596:	cf 91       	pop	r28
+ 598:	08 95       	ret
 
-00000596 <FingerPS_match>:
+0000059a <FingerPS_match>:
 void FingerPS_match(){
 	UART_sendByte(0xef);
- 596:	8f ee       	ldi	r24, 0xEF	; 239
- 598:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 59a:	8f ee       	ldi	r24, 0xEF	; 239
+ 59c:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
 	UART_sendByte(0x01);
- 59c:	81 e0       	ldi	r24, 0x01	; 1
- 59e:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 5a0:	81 e0       	ldi	r24, 0x01	; 1
+ 5a2:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
 	UART_sendByte(0xff);
- 5a2:	8f ef       	ldi	r24, 0xFF	; 255
- 5a4:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 5a6:	8f ef       	ldi	r24, 0xFF	; 255
+ 5a8:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
 	UART_sendByte(0xff);
- 5a8:	8f ef       	ldi	r24, 0xFF	; 255
- 5aa:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 5ac:	8f ef       	ldi	r24, 0xFF	; 255
+ 5ae:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
 	UART_sendByte(0xff);
- 5ae:	8f ef       	ldi	r24, 0xFF	; 255
- 5b0:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 5b2:	8f ef       	ldi	r24, 0xFF	; 255
+ 5b4:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
 	UART_sendByte(0xff);
- 5b4:	8f ef       	ldi	r24, 0xFF	; 255
- 5b6:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 5b8:	8f ef       	ldi	r24, 0xFF	; 255
+ 5ba:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
 	UART_sendByte(0x01);
- 5ba:	81 e0       	ldi	r24, 0x01	; 1
- 5bc:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 5be:	81 e0       	ldi	r24, 0x01	; 1
+ 5c0:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
 	UART_sendByte(0x00);
- 5c0:	80 e0       	ldi	r24, 0x00	; 0
- 5c2:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 5c4:	80 e0       	ldi	r24, 0x00	; 0
+ 5c6:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
 	UART_sendByte(0x03);
- 5c6:	83 e0       	ldi	r24, 0x03	; 3
- 5c8:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 5ca:	83 e0       	ldi	r24, 0x03	; 3
+ 5cc:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
 	UART_sendByte(0x03);
- 5cc:	83 e0       	ldi	r24, 0x03	; 3
- 5ce:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 5d0:	83 e0       	ldi	r24, 0x03	; 3
+ 5d2:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
 	UART_sendByte(0x00);
- 5d2:	80 e0       	ldi	r24, 0x00	; 0
- 5d4:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
+ 5d6:	80 e0       	ldi	r24, 0x00	; 0
+ 5d8:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
 	UART_sendByte(0x07);
- 5d8:	87 e0       	ldi	r24, 0x07	; 7
- 5da:	0e 94 d4 04 	call	0x9a8	; 0x9a8 <UART_sendByte>
- 5de:	08 95       	ret
+ 5dc:	87 e0       	ldi	r24, 0x07	; 7
+ 5de:	0e 94 d6 04 	call	0x9ac	; 0x9ac <UART_sendByte>
+ 5e2:	08 95       	ret
 
-000005e0 <StoreAckBytes>:
+000005e4 <StoreAckBytes>:
 }
 /********************************************** ISR	***************************************/
 void StoreAckBytes (u8 RecivedByte){
 	static u8 i = 0;
 	AckPack [i] = RecivedByte; 
- 5e0:	90 91 a6 00 	lds	r25, 0x00A6	; 0x8000a6 <__data_end>
- 5e4:	e9 2f       	mov	r30, r25
- 5e6:	f0 e0       	ldi	r31, 0x00	; 0
- 5e8:	e9 55       	subi	r30, 0x59	; 89
- 5ea:	ff 4f       	sbci	r31, 0xFF	; 255
- 5ec:	80 83       	st	Z, r24
+ 5e4:	90 91 a6 00 	lds	r25, 0x00A6	; 0x8000a6 <__data_end>
+ 5e8:	e9 2f       	mov	r30, r25
+ 5ea:	f0 e0       	ldi	r31, 0x00	; 0
+ 5ec:	e9 55       	subi	r30, 0x59	; 89
+ 5ee:	ff 4f       	sbci	r31, 0xFF	; 255
+ 5f0:	80 83       	st	Z, r24
 	if (i==11){
- 5ee:	9b 30       	cpi	r25, 0x0B	; 11
- 5f0:	19 f4       	brne	.+6      	; 0x5f8 <StoreAckBytes+0x18>
+ 5f2:	9b 30       	cpi	r25, 0x0B	; 11
+ 5f4:	19 f4       	brne	.+6      	; 0x5fc <StoreAckBytes+0x18>
 		i = 0;
- 5f2:	10 92 a6 00 	sts	0x00A6, r1	; 0x8000a6 <__data_end>
- 5f6:	08 95       	ret
+ 5f6:	10 92 a6 00 	sts	0x00A6, r1	; 0x8000a6 <__data_end>
+ 5fa:	08 95       	ret
 	}
 	else i++;
- 5f8:	9f 5f       	subi	r25, 0xFF	; 255
- 5fa:	90 93 a6 00 	sts	0x00A6, r25	; 0x8000a6 <__data_end>
- 5fe:	08 95       	ret
+ 5fc:	9f 5f       	subi	r25, 0xFF	; 255
+ 5fe:	90 93 a6 00 	sts	0x00A6, r25	; 0x8000a6 <__data_end>
+ 602:	08 95       	ret
 
-00000600 <FingerPS_CheckAck>:
+00000604 <FingerPS_CheckAck>:
 }
+/********************************************* FUNCTION TO CHECK THE SUM OF EACH ACKNOWLEDGMENT PACK	***************/
 u8 FingerPS_CheckAck (){
 	u8 CheckResult;
 	if (AckPack[11] == 0x0A){
- 600:	80 91 b2 00 	lds	r24, 0x00B2	; 0x8000b2 <AckPack+0xb>
- 604:	8a 30       	cpi	r24, 0x0A	; 10
- 606:	21 f4       	brne	.+8      	; 0x610 <FingerPS_CheckAck+0x10>
+ 604:	80 91 b2 00 	lds	r24, 0x00B2	; 0x8000b2 <AckPack+0xb>
+ 608:	8a 30       	cpi	r24, 0x0A	; 10
+ 60a:	21 f4       	brne	.+8      	; 0x614 <FingerPS_CheckAck+0x10>
 		CheckResult = true ;
 		AckPack [11] = 0x00; 
- 608:	10 92 b2 00 	sts	0x00B2, r1	; 0x8000b2 <AckPack+0xb>
-	else i++;
+ 60c:	10 92 b2 00 	sts	0x00B2, r1	; 0x8000b2 <AckPack+0xb>
 }
+/********************************************* FUNCTION TO CHECK THE SUM OF EACH ACKNOWLEDGMENT PACK	***************/
 u8 FingerPS_CheckAck (){
 	u8 CheckResult;
 	if (AckPack[11] == 0x0A){
 		CheckResult = true ;
- 60c:	81 e0       	ldi	r24, 0x01	; 1
- 60e:	08 95       	ret
+ 610:	81 e0       	ldi	r24, 0x01	; 1
+ 612:	08 95       	ret
 		AckPack [11] = 0x00; 
 	}
 	else{
 		CheckResult = false;
- 610:	80 e0       	ldi	r24, 0x00	; 0
+ 614:	80 e0       	ldi	r24, 0x00	; 0
 	}
 	return CheckResult;
 } 
- 612:	08 95       	ret
+ 616:	08 95       	ret
 
-00000614 <FingerPS_SetNewFingerPrint>:
+00000618 <FingerPS_SetNewFingerPrint>:
 void FingerPS_SetNewFingerPrint (u16 address){
- 614:	cf 93       	push	r28
- 616:	df 93       	push	r29
- 618:	ec 01       	movw	r28, r24
+ 618:	cf 93       	push	r28
+ 61a:	df 93       	push	r29
+ 61c:	ec 01       	movw	r28, r24
 	/*********************************************		FIRST IMAGE GENERATION	******************************************/
 	RepeatGenImag1:
 	FingerPS_genImg();
- 61a:	0e 94 f3 01 	call	0x3e6	; 0x3e6 <FingerPS_genImg>
- 61e:	2f ef       	ldi	r18, 0xFF	; 255
- 620:	81 ee       	ldi	r24, 0xE1	; 225
- 622:	94 e0       	ldi	r25, 0x04	; 4
- 624:	21 50       	subi	r18, 0x01	; 1
- 626:	80 40       	sbci	r24, 0x00	; 0
- 628:	90 40       	sbci	r25, 0x00	; 0
- 62a:	e1 f7       	brne	.-8      	; 0x624 <FingerPS_SetNewFingerPrint+0x10>
- 62c:	00 c0       	rjmp	.+0      	; 0x62e <FingerPS_SetNewFingerPrint+0x1a>
- 62e:	00 00       	nop
+ 61e:	0e 94 f3 01 	call	0x3e6	; 0x3e6 <FingerPS_genImg>
+ 622:	2f ef       	ldi	r18, 0xFF	; 255
+ 624:	81 ee       	ldi	r24, 0xE1	; 225
+ 626:	94 e0       	ldi	r25, 0x04	; 4
+ 628:	21 50       	subi	r18, 0x01	; 1
+ 62a:	80 40       	sbci	r24, 0x00	; 0
+ 62c:	90 40       	sbci	r25, 0x00	; 0
+ 62e:	e1 f7       	brne	.-8      	; 0x628 <FingerPS_SetNewFingerPrint+0x10>
+ 630:	00 c0       	rjmp	.+0      	; 0x632 <FingerPS_SetNewFingerPrint+0x1a>
+ 632:	00 00       	nop
 	_delay_ms(100);
 	if (FingerPS_CheckAck() == false) goto RepeatGenImag1; /*WAIT FOR ACK*/
- 630:	0e 94 00 03 	call	0x600	; 0x600 <FingerPS_CheckAck>
- 634:	88 23       	and	r24, r24
- 636:	89 f3       	breq	.-30     	; 0x61a <FingerPS_SetNewFingerPrint+0x6>
+ 634:	0e 94 02 03 	call	0x604	; 0x604 <FingerPS_CheckAck>
+ 638:	88 23       	and	r24, r24
+ 63a:	89 f3       	breq	.-30     	; 0x61e <FingerPS_SetNewFingerPrint+0x6>
 	/*********************************************	FIRST CHARACTER FILE GENERATION	**************************************/
 	RepeatConvertFile1:
 	FingerPS_convertImg1CharFile();
- 638:	0e 94 02 02 	call	0x404	; 0x404 <FingerPS_convertImg1CharFile>
- 63c:	2f ef       	ldi	r18, 0xFF	; 255
- 63e:	81 ee       	ldi	r24, 0xE1	; 225
- 640:	94 e0       	ldi	r25, 0x04	; 4
- 642:	21 50       	subi	r18, 0x01	; 1
- 644:	80 40       	sbci	r24, 0x00	; 0
- 646:	90 40       	sbci	r25, 0x00	; 0
- 648:	e1 f7       	brne	.-8      	; 0x642 <FingerPS_SetNewFingerPrint+0x2e>
- 64a:	00 c0       	rjmp	.+0      	; 0x64c <FingerPS_SetNewFingerPrint+0x38>
- 64c:	00 00       	nop
+ 63c:	0e 94 02 02 	call	0x404	; 0x404 <FingerPS_convertImg1CharFile>
+ 640:	2f ef       	ldi	r18, 0xFF	; 255
+ 642:	81 ee       	ldi	r24, 0xE1	; 225
+ 644:	94 e0       	ldi	r25, 0x04	; 4
+ 646:	21 50       	subi	r18, 0x01	; 1
+ 648:	80 40       	sbci	r24, 0x00	; 0
+ 64a:	90 40       	sbci	r25, 0x00	; 0
+ 64c:	e1 f7       	brne	.-8      	; 0x646 <FingerPS_SetNewFingerPrint+0x2e>
+ 64e:	00 c0       	rjmp	.+0      	; 0x650 <FingerPS_SetNewFingerPrint+0x38>
+ 650:	00 00       	nop
 	_delay_ms(100);
 	if (FingerPS_CheckAck() == false) goto RepeatConvertFile1; /*WAIT FOR ACK*/
- 64e:	0e 94 00 03 	call	0x600	; 0x600 <FingerPS_CheckAck>
- 652:	88 23       	and	r24, r24
- 654:	89 f3       	breq	.-30     	; 0x638 <FingerPS_SetNewFingerPrint+0x24>
+ 652:	0e 94 02 03 	call	0x604	; 0x604 <FingerPS_CheckAck>
+ 656:	88 23       	and	r24, r24
+ 658:	89 f3       	breq	.-30     	; 0x63c <FingerPS_SetNewFingerPrint+0x24>
 	/*********************************************		SECOND IMAGE GENERATION		**************************************/
 	RepeatGenImag2:
 	FingerPS_genImg();
- 656:	0e 94 f3 01 	call	0x3e6	; 0x3e6 <FingerPS_genImg>
- 65a:	2f ef       	ldi	r18, 0xFF	; 255
- 65c:	81 ee       	ldi	r24, 0xE1	; 225
- 65e:	94 e0       	ldi	r25, 0x04	; 4
- 660:	21 50       	subi	r18, 0x01	; 1
- 662:	80 40       	sbci	r24, 0x00	; 0
- 664:	90 40       	sbci	r25, 0x00	; 0
- 666:	e1 f7       	brne	.-8      	; 0x660 <FingerPS_SetNewFingerPrint+0x4c>
- 668:	00 c0       	rjmp	.+0      	; 0x66a <FingerPS_SetNewFingerPrint+0x56>
- 66a:	00 00       	nop
+ 65a:	0e 94 f3 01 	call	0x3e6	; 0x3e6 <FingerPS_genImg>
+ 65e:	2f ef       	ldi	r18, 0xFF	; 255
+ 660:	81 ee       	ldi	r24, 0xE1	; 225
+ 662:	94 e0       	ldi	r25, 0x04	; 4
+ 664:	21 50       	subi	r18, 0x01	; 1
+ 666:	80 40       	sbci	r24, 0x00	; 0
+ 668:	90 40       	sbci	r25, 0x00	; 0
+ 66a:	e1 f7       	brne	.-8      	; 0x664 <FingerPS_SetNewFingerPrint+0x4c>
+ 66c:	00 c0       	rjmp	.+0      	; 0x66e <FingerPS_SetNewFingerPrint+0x56>
+ 66e:	00 00       	nop
 	_delay_ms(100);
 	if (FingerPS_CheckAck() == false) goto RepeatGenImag2;/*WAIT FOR ACK*/
- 66c:	0e 94 00 03 	call	0x600	; 0x600 <FingerPS_CheckAck>
- 670:	88 23       	and	r24, r24
- 672:	89 f3       	breq	.-30     	; 0x656 <FingerPS_SetNewFingerPrint+0x42>
+ 670:	0e 94 02 03 	call	0x604	; 0x604 <FingerPS_CheckAck>
+ 674:	88 23       	and	r24, r24
+ 676:	89 f3       	breq	.-30     	; 0x65a <FingerPS_SetNewFingerPrint+0x42>
 	/*********************************************		SECONED CHAR FILE GENERATED		**********************************/
 	RepeatConvertFile2:
 	FingerPS_convertImg2CharFile();
- 674:	0e 94 2a 02 	call	0x454	; 0x454 <FingerPS_convertImg2CharFile>
- 678:	2f ef       	ldi	r18, 0xFF	; 255
- 67a:	81 ee       	ldi	r24, 0xE1	; 225
- 67c:	94 e0       	ldi	r25, 0x04	; 4
- 67e:	21 50       	subi	r18, 0x01	; 1
- 680:	80 40       	sbci	r24, 0x00	; 0
- 682:	90 40       	sbci	r25, 0x00	; 0
- 684:	e1 f7       	brne	.-8      	; 0x67e <FingerPS_SetNewFingerPrint+0x6a>
- 686:	00 c0       	rjmp	.+0      	; 0x688 <FingerPS_SetNewFingerPrint+0x74>
- 688:	00 00       	nop
+ 678:	0e 94 2a 02 	call	0x454	; 0x454 <FingerPS_convertImg2CharFile>
+ 67c:	2f ef       	ldi	r18, 0xFF	; 255
+ 67e:	81 ee       	ldi	r24, 0xE1	; 225
+ 680:	94 e0       	ldi	r25, 0x04	; 4
+ 682:	21 50       	subi	r18, 0x01	; 1
+ 684:	80 40       	sbci	r24, 0x00	; 0
+ 686:	90 40       	sbci	r25, 0x00	; 0
+ 688:	e1 f7       	brne	.-8      	; 0x682 <FingerPS_SetNewFingerPrint+0x6a>
+ 68a:	00 c0       	rjmp	.+0      	; 0x68c <FingerPS_SetNewFingerPrint+0x74>
+ 68c:	00 00       	nop
 	_delay_ms(100);
 	if (FingerPS_CheckAck() == false) goto RepeatConvertFile2;/*WAIT FOR ACK*/
- 68a:	0e 94 00 03 	call	0x600	; 0x600 <FingerPS_CheckAck>
- 68e:	88 23       	and	r24, r24
- 690:	89 f3       	breq	.-30     	; 0x674 <FingerPS_SetNewFingerPrint+0x60>
+ 68e:	0e 94 02 03 	call	0x604	; 0x604 <FingerPS_CheckAck>
+ 692:	88 23       	and	r24, r24
+ 694:	89 f3       	breq	.-30     	; 0x678 <FingerPS_SetNewFingerPrint+0x60>
 	/********************************************		Generate Tempelate			**********************************/
 	FingerPS_genTemplate();
- 692:	0e 94 52 02 	call	0x4a4	; 0x4a4 <FingerPS_genTemplate>
- 696:	2f ef       	ldi	r18, 0xFF	; 255
- 698:	89 e6       	ldi	r24, 0x69	; 105
- 69a:	98 e1       	ldi	r25, 0x18	; 24
- 69c:	21 50       	subi	r18, 0x01	; 1
- 69e:	80 40       	sbci	r24, 0x00	; 0
- 6a0:	90 40       	sbci	r25, 0x00	; 0
- 6a2:	e1 f7       	brne	.-8      	; 0x69c <FingerPS_SetNewFingerPrint+0x88>
- 6a4:	00 c0       	rjmp	.+0      	; 0x6a6 <FingerPS_SetNewFingerPrint+0x92>
- 6a6:	00 00       	nop
+ 696:	0e 94 52 02 	call	0x4a4	; 0x4a4 <FingerPS_genTemplate>
+ 69a:	2f ef       	ldi	r18, 0xFF	; 255
+ 69c:	89 e6       	ldi	r24, 0x69	; 105
+ 69e:	98 e1       	ldi	r25, 0x18	; 24
+ 6a0:	21 50       	subi	r18, 0x01	; 1
+ 6a2:	80 40       	sbci	r24, 0x00	; 0
+ 6a4:	90 40       	sbci	r25, 0x00	; 0
+ 6a6:	e1 f7       	brne	.-8      	; 0x6a0 <FingerPS_SetNewFingerPrint+0x88>
+ 6a8:	00 c0       	rjmp	.+0      	; 0x6aa <FingerPS_SetNewFingerPrint+0x92>
+ 6aa:	00 00       	nop
 	_delay_ms(500);
 	if (FingerPS_CheckAck() == false) goto RepeatGenImag1;/*WAIT FOR ACK*/
- 6a8:	0e 94 00 03 	call	0x600	; 0x600 <FingerPS_CheckAck>
- 6ac:	88 23       	and	r24, r24
- 6ae:	09 f4       	brne	.+2      	; 0x6b2 <FingerPS_SetNewFingerPrint+0x9e>
- 6b0:	b4 cf       	rjmp	.-152    	; 0x61a <FingerPS_SetNewFingerPrint+0x6>
+ 6ac:	0e 94 02 03 	call	0x604	; 0x604 <FingerPS_CheckAck>
+ 6b0:	88 23       	and	r24, r24
+ 6b2:	09 f4       	brne	.+2      	; 0x6b6 <FingerPS_SetNewFingerPrint+0x9e>
+ 6b4:	b4 cf       	rjmp	.-152    	; 0x61e <FingerPS_SetNewFingerPrint+0x6>
 	/*******************************************		Tempelate Storing			***********************************/
 	RepeatStrTemp:
 	FingerPS_strTemplate(address);
- 6b2:	ce 01       	movw	r24, r28
- 6b4:	0e 94 77 02 	call	0x4ee	; 0x4ee <FingerPS_strTemplate>
- 6b8:	2f ef       	ldi	r18, 0xFF	; 255
- 6ba:	81 ee       	ldi	r24, 0xE1	; 225
- 6bc:	94 e0       	ldi	r25, 0x04	; 4
- 6be:	21 50       	subi	r18, 0x01	; 1
- 6c0:	80 40       	sbci	r24, 0x00	; 0
- 6c2:	90 40       	sbci	r25, 0x00	; 0
- 6c4:	e1 f7       	brne	.-8      	; 0x6be <FingerPS_SetNewFingerPrint+0xaa>
- 6c6:	00 c0       	rjmp	.+0      	; 0x6c8 <FingerPS_SetNewFingerPrint+0xb4>
- 6c8:	00 00       	nop
+ 6b6:	ce 01       	movw	r24, r28
+ 6b8:	0e 94 77 02 	call	0x4ee	; 0x4ee <FingerPS_strTemplate>
+ 6bc:	2f ef       	ldi	r18, 0xFF	; 255
+ 6be:	81 ee       	ldi	r24, 0xE1	; 225
+ 6c0:	94 e0       	ldi	r25, 0x04	; 4
+ 6c2:	21 50       	subi	r18, 0x01	; 1
+ 6c4:	80 40       	sbci	r24, 0x00	; 0
+ 6c6:	90 40       	sbci	r25, 0x00	; 0
+ 6c8:	e1 f7       	brne	.-8      	; 0x6c2 <FingerPS_SetNewFingerPrint+0xaa>
+ 6ca:	00 c0       	rjmp	.+0      	; 0x6cc <FingerPS_SetNewFingerPrint+0xb4>
+ 6cc:	00 00       	nop
 	_delay_ms(100);
 	if (FingerPS_CheckAck() == false) goto RepeatStrTemp;/*WAIT FOR ACK*/
- 6ca:	0e 94 00 03 	call	0x600	; 0x600 <FingerPS_CheckAck>
- 6ce:	88 23       	and	r24, r24
- 6d0:	81 f3       	breq	.-32     	; 0x6b2 <FingerPS_SetNewFingerPrint+0x9e>
+ 6ce:	0e 94 02 03 	call	0x604	; 0x604 <FingerPS_CheckAck>
+ 6d2:	88 23       	and	r24, r24
+ 6d4:	81 f3       	breq	.-32     	; 0x6b6 <FingerPS_SetNewFingerPrint+0x9e>
 }
- 6d2:	df 91       	pop	r29
- 6d4:	cf 91       	pop	r28
- 6d6:	08 95       	ret
+ 6d6:	df 91       	pop	r29
+ 6d8:	cf 91       	pop	r28
+ 6da:	08 95       	ret
 
-000006d8 <FingerPS_CheckOneToOneMatch>:
+000006dc <FingerPS_CheckOneToOneMatch>:
 u8 FingerPS_CheckOneToOneMatch(u16 address){
- 6d8:	cf 93       	push	r28
- 6da:	df 93       	push	r29
- 6dc:	ec 01       	movw	r28, r24
+ 6dc:	cf 93       	push	r28
+ 6de:	df 93       	push	r29
+ 6e0:	ec 01       	movw	r28, r24
 	u8 match_result; 
 	/*******************************************		Generate Image to check one to one match	********************/
 	RepeatCheckImagGen:
 	FingerPS_genImg();
- 6de:	0e 94 f3 01 	call	0x3e6	; 0x3e6 <FingerPS_genImg>
- 6e2:	2f ef       	ldi	r18, 0xFF	; 255
- 6e4:	81 ee       	ldi	r24, 0xE1	; 225
- 6e6:	94 e0       	ldi	r25, 0x04	; 4
- 6e8:	21 50       	subi	r18, 0x01	; 1
- 6ea:	80 40       	sbci	r24, 0x00	; 0
- 6ec:	90 40       	sbci	r25, 0x00	; 0
- 6ee:	e1 f7       	brne	.-8      	; 0x6e8 <FingerPS_CheckOneToOneMatch+0x10>
- 6f0:	00 c0       	rjmp	.+0      	; 0x6f2 <FingerPS_CheckOneToOneMatch+0x1a>
- 6f2:	00 00       	nop
+ 6e2:	0e 94 f3 01 	call	0x3e6	; 0x3e6 <FingerPS_genImg>
+ 6e6:	2f ef       	ldi	r18, 0xFF	; 255
+ 6e8:	81 ee       	ldi	r24, 0xE1	; 225
+ 6ea:	94 e0       	ldi	r25, 0x04	; 4
+ 6ec:	21 50       	subi	r18, 0x01	; 1
+ 6ee:	80 40       	sbci	r24, 0x00	; 0
+ 6f0:	90 40       	sbci	r25, 0x00	; 0
+ 6f2:	e1 f7       	brne	.-8      	; 0x6ec <FingerPS_CheckOneToOneMatch+0x10>
+ 6f4:	00 c0       	rjmp	.+0      	; 0x6f6 <FingerPS_CheckOneToOneMatch+0x1a>
+ 6f6:	00 00       	nop
 	_delay_ms(100);
-	if (FingerPS_CheckAck() == false) goto RepeatCheckImagGen; /*WAIT FOR ACK*/
- 6f4:	0e 94 00 03 	call	0x600	; 0x600 <FingerPS_CheckAck>
- 6f8:	88 23       	and	r24, r24
- 6fa:	89 f3       	breq	.-30     	; 0x6de <FingerPS_CheckOneToOneMatch+0x6>
+	if (FingerPS_CheckAck() == false) goto RepeatCheckImagGen; /*WAIT FOR ACK*/ 
+ 6f8:	0e 94 02 03 	call	0x604	; 0x604 <FingerPS_CheckAck>
+ 6fc:	88 23       	and	r24, r24
+ 6fe:	89 f3       	breq	.-30     	; 0x6e2 <FingerPS_CheckOneToOneMatch+0x6>
 	/******************************************			Generate char from Check Image	****************************************/
 	RepeatCharCheckFileGen:
 	FingerPS_convertImg1CharFile();
- 6fc:	0e 94 02 02 	call	0x404	; 0x404 <FingerPS_convertImg1CharFile>
- 700:	2f ef       	ldi	r18, 0xFF	; 255
- 702:	81 ee       	ldi	r24, 0xE1	; 225
- 704:	94 e0       	ldi	r25, 0x04	; 4
- 706:	21 50       	subi	r18, 0x01	; 1
- 708:	80 40       	sbci	r24, 0x00	; 0
- 70a:	90 40       	sbci	r25, 0x00	; 0
- 70c:	e1 f7       	brne	.-8      	; 0x706 <FingerPS_CheckOneToOneMatch+0x2e>
- 70e:	00 c0       	rjmp	.+0      	; 0x710 <FingerPS_CheckOneToOneMatch+0x38>
- 710:	00 00       	nop
+ 700:	0e 94 02 02 	call	0x404	; 0x404 <FingerPS_convertImg1CharFile>
+ 704:	2f ef       	ldi	r18, 0xFF	; 255
+ 706:	81 ee       	ldi	r24, 0xE1	; 225
+ 708:	94 e0       	ldi	r25, 0x04	; 4
+ 70a:	21 50       	subi	r18, 0x01	; 1
+ 70c:	80 40       	sbci	r24, 0x00	; 0
+ 70e:	90 40       	sbci	r25, 0x00	; 0
+ 710:	e1 f7       	brne	.-8      	; 0x70a <FingerPS_CheckOneToOneMatch+0x2e>
+ 712:	00 c0       	rjmp	.+0      	; 0x714 <FingerPS_CheckOneToOneMatch+0x38>
+ 714:	00 00       	nop
 	_delay_ms(100);
 	if (FingerPS_CheckAck() == false) goto RepeatCharCheckFileGen; /*WAIT FOR ACK*/
- 712:	0e 94 00 03 	call	0x600	; 0x600 <FingerPS_CheckAck>
- 716:	88 23       	and	r24, r24
- 718:	89 f3       	breq	.-30     	; 0x6fc <FingerPS_CheckOneToOneMatch+0x24>
+ 716:	0e 94 02 03 	call	0x604	; 0x604 <FingerPS_CheckAck>
+ 71a:	88 23       	and	r24, r24
+ 71c:	89 f3       	breq	.-30     	; 0x700 <FingerPS_CheckOneToOneMatch+0x24>
 	/******************************************			Load Char in char file 2	***********************************/
 	RepeatLoadCharFile:
 	FingerPS_LoadCharFile(address);
- 71a:	ce 01       	movw	r24, r28
- 71c:	0e 94 97 02 	call	0x52e	; 0x52e <FingerPS_LoadCharFile>
- 720:	2f ef       	ldi	r18, 0xFF	; 255
- 722:	81 ee       	ldi	r24, 0xE1	; 225
- 724:	94 e0       	ldi	r25, 0x04	; 4
- 726:	21 50       	subi	r18, 0x01	; 1
- 728:	80 40       	sbci	r24, 0x00	; 0
- 72a:	90 40       	sbci	r25, 0x00	; 0
- 72c:	e1 f7       	brne	.-8      	; 0x726 <FingerPS_CheckOneToOneMatch+0x4e>
- 72e:	00 c0       	rjmp	.+0      	; 0x730 <FingerPS_CheckOneToOneMatch+0x58>
- 730:	00 00       	nop
+ 71e:	ce 01       	movw	r24, r28
+ 720:	0e 94 97 02 	call	0x52e	; 0x52e <FingerPS_LoadCharFile>
+ 724:	2f ef       	ldi	r18, 0xFF	; 255
+ 726:	81 ee       	ldi	r24, 0xE1	; 225
+ 728:	94 e0       	ldi	r25, 0x04	; 4
+ 72a:	21 50       	subi	r18, 0x01	; 1
+ 72c:	80 40       	sbci	r24, 0x00	; 0
+ 72e:	90 40       	sbci	r25, 0x00	; 0
+ 730:	e1 f7       	brne	.-8      	; 0x72a <FingerPS_CheckOneToOneMatch+0x4e>
+ 732:	00 c0       	rjmp	.+0      	; 0x734 <FingerPS_CheckOneToOneMatch+0x58>
+ 734:	00 00       	nop
 	_delay_ms(100);
 	if (FingerPS_CheckAck() == false) goto RepeatLoadCharFile; /*Wait for ACK*/
- 732:	0e 94 00 03 	call	0x600	; 0x600 <FingerPS_CheckAck>
- 736:	88 23       	and	r24, r24
- 738:	81 f3       	breq	.-32     	; 0x71a <FingerPS_CheckOneToOneMatch+0x42>
+ 736:	0e 94 02 03 	call	0x604	; 0x604 <FingerPS_CheckAck>
+ 73a:	88 23       	and	r24, r24
+ 73c:	81 f3       	breq	.-32     	; 0x71e <FingerPS_CheckOneToOneMatch+0x42>
 	/******************************************			CHECK MATCH				****************************************/
 	FingerPS_match();
- 73a:	0e 94 cb 02 	call	0x596	; 0x596 <FingerPS_match>
- 73e:	2f ef       	ldi	r18, 0xFF	; 255
- 740:	81 ee       	ldi	r24, 0xE1	; 225
- 742:	94 e0       	ldi	r25, 0x04	; 4
- 744:	21 50       	subi	r18, 0x01	; 1
- 746:	80 40       	sbci	r24, 0x00	; 0
- 748:	90 40       	sbci	r25, 0x00	; 0
- 74a:	e1 f7       	brne	.-8      	; 0x744 <FingerPS_CheckOneToOneMatch+0x6c>
- 74c:	00 c0       	rjmp	.+0      	; 0x74e <FingerPS_CheckOneToOneMatch+0x76>
- 74e:	00 00       	nop
+ 73e:	0e 94 cd 02 	call	0x59a	; 0x59a <FingerPS_match>
+ 742:	2f ef       	ldi	r18, 0xFF	; 255
+ 744:	81 ee       	ldi	r24, 0xE1	; 225
+ 746:	94 e0       	ldi	r25, 0x04	; 4
+ 748:	21 50       	subi	r18, 0x01	; 1
+ 74a:	80 40       	sbci	r24, 0x00	; 0
+ 74c:	90 40       	sbci	r25, 0x00	; 0
+ 74e:	e1 f7       	brne	.-8      	; 0x748 <FingerPS_CheckOneToOneMatch+0x6c>
+ 750:	00 c0       	rjmp	.+0      	; 0x752 <FingerPS_CheckOneToOneMatch+0x76>
+ 752:	00 00       	nop
 	_delay_ms(100); 
 	if (AckPack[9] == 0x00){
- 750:	80 91 b0 00 	lds	r24, 0x00B0	; 0x8000b0 <AckPack+0x9>
- 754:	81 11       	cpse	r24, r1
- 756:	02 c0       	rjmp	.+4      	; 0x75c <FingerPS_CheckOneToOneMatch+0x84>
+ 754:	80 91 b0 00 	lds	r24, 0x00B0	; 0x8000b0 <AckPack+0x9>
+ 758:	81 11       	cpse	r24, r1
+ 75a:	02 c0       	rjmp	.+4      	; 0x760 <FingerPS_CheckOneToOneMatch+0x84>
 		match_result = MATCHED;
- 758:	81 e0       	ldi	r24, 0x01	; 1
- 75a:	01 c0       	rjmp	.+2      	; 0x75e <FingerPS_CheckOneToOneMatch+0x86>
+ 75c:	81 e0       	ldi	r24, 0x01	; 1
+ 75e:	01 c0       	rjmp	.+2      	; 0x762 <FingerPS_CheckOneToOneMatch+0x86>
 	}
 	else {
 		match_result = NOTMATCHED; 
- 75c:	80 e0       	ldi	r24, 0x00	; 0
+ 760:	80 e0       	ldi	r24, 0x00	; 0
 	} 
 	return match_result; 
 }
- 75e:	df 91       	pop	r29
- 760:	cf 91       	pop	r28
- 762:	08 95       	ret
+ 762:	df 91       	pop	r29
+ 764:	cf 91       	pop	r28
+ 766:	08 95       	ret
 
-00000764 <M_DIO_Void_SetPinDirection>:
+00000768 <M_DIO_Void_SetPinDirection>:
 /*   FUNCTION BODY   */
 /*--------------------------------------------------------------------------------------------*/
 void M_DIO_Void_SetPinDirection(u8 Copy_U8_Number, u8 Copy_U8_State)
 {
 
 	u8 Local_U8_Bit    = Copy_U8_Number % 10;
- 764:	9d ec       	ldi	r25, 0xCD	; 205
- 766:	89 9f       	mul	r24, r25
- 768:	91 2d       	mov	r25, r1
- 76a:	11 24       	eor	r1, r1
- 76c:	29 2f       	mov	r18, r25
- 76e:	26 95       	lsr	r18
- 770:	26 95       	lsr	r18
+ 768:	9d ec       	ldi	r25, 0xCD	; 205
+ 76a:	89 9f       	mul	r24, r25
+ 76c:	91 2d       	mov	r25, r1
+ 76e:	11 24       	eor	r1, r1
+ 770:	29 2f       	mov	r18, r25
  772:	26 95       	lsr	r18
- 774:	22 0f       	add	r18, r18
- 776:	32 2f       	mov	r19, r18
- 778:	33 0f       	add	r19, r19
- 77a:	33 0f       	add	r19, r19
- 77c:	23 0f       	add	r18, r19
- 77e:	82 1b       	sub	r24, r18
- 780:	28 2f       	mov	r18, r24
+ 774:	26 95       	lsr	r18
+ 776:	26 95       	lsr	r18
+ 778:	22 0f       	add	r18, r18
+ 77a:	32 2f       	mov	r19, r18
+ 77c:	33 0f       	add	r19, r19
+ 77e:	33 0f       	add	r19, r19
+ 780:	23 0f       	add	r18, r19
+ 782:	82 1b       	sub	r24, r18
+ 784:	28 2f       	mov	r18, r24
 	u8 Local_U8_Group  = Copy_U8_Number / 10;
- 782:	96 95       	lsr	r25
- 784:	96 95       	lsr	r25
  786:	96 95       	lsr	r25
+ 788:	96 95       	lsr	r25
+ 78a:	96 95       	lsr	r25
 	switch(Copy_U8_State)
- 788:	66 23       	and	r22, r22
- 78a:	19 f0       	breq	.+6      	; 0x792 <M_DIO_Void_SetPinDirection+0x2e>
- 78c:	61 30       	cpi	r22, 0x01	; 1
- 78e:	e1 f1       	breq	.+120    	; 0x808 <__DATA_REGION_LENGTH__+0x8>
- 790:	08 95       	ret
+ 78c:	66 23       	and	r22, r22
+ 78e:	19 f0       	breq	.+6      	; 0x796 <M_DIO_Void_SetPinDirection+0x2e>
+ 790:	61 30       	cpi	r22, 0x01	; 1
+ 792:	e1 f1       	breq	.+120    	; 0x80c <__DATA_REGION_LENGTH__+0xc>
+ 794:	08 95       	ret
 	{
 	case INPUT:
 		switch(Local_U8_Group)
- 792:	92 30       	cpi	r25, 0x02	; 2
- 794:	a9 f0       	breq	.+42     	; 0x7c0 <M_DIO_Void_SetPinDirection+0x5c>
- 796:	18 f4       	brcc	.+6      	; 0x79e <M_DIO_Void_SetPinDirection+0x3a>
- 798:	91 30       	cpi	r25, 0x01	; 1
- 79a:	31 f0       	breq	.+12     	; 0x7a8 <M_DIO_Void_SetPinDirection+0x44>
- 79c:	08 95       	ret
- 79e:	93 30       	cpi	r25, 0x03	; 3
- 7a0:	d9 f0       	breq	.+54     	; 0x7d8 <M_DIO_Void_SetPinDirection+0x74>
- 7a2:	94 30       	cpi	r25, 0x04	; 4
- 7a4:	29 f1       	breq	.+74     	; 0x7f0 <M_DIO_Void_SetPinDirection+0x8c>
- 7a6:	08 95       	ret
+ 796:	92 30       	cpi	r25, 0x02	; 2
+ 798:	a9 f0       	breq	.+42     	; 0x7c4 <M_DIO_Void_SetPinDirection+0x5c>
+ 79a:	18 f4       	brcc	.+6      	; 0x7a2 <M_DIO_Void_SetPinDirection+0x3a>
+ 79c:	91 30       	cpi	r25, 0x01	; 1
+ 79e:	31 f0       	breq	.+12     	; 0x7ac <M_DIO_Void_SetPinDirection+0x44>
+ 7a0:	08 95       	ret
+ 7a2:	93 30       	cpi	r25, 0x03	; 3
+ 7a4:	d9 f0       	breq	.+54     	; 0x7dc <M_DIO_Void_SetPinDirection+0x74>
+ 7a6:	94 30       	cpi	r25, 0x04	; 4
+ 7a8:	29 f1       	breq	.+74     	; 0x7f4 <M_DIO_Void_SetPinDirection+0x8c>
+ 7aa:	08 95       	ret
 		{
 		case 1: CLR_BIT(DDRA_REG,Local_U8_Bit); break;
- 7a8:	3a b3       	in	r19, 0x1a	; 26
- 7aa:	81 e0       	ldi	r24, 0x01	; 1
- 7ac:	90 e0       	ldi	r25, 0x00	; 0
- 7ae:	02 c0       	rjmp	.+4      	; 0x7b4 <M_DIO_Void_SetPinDirection+0x50>
- 7b0:	88 0f       	add	r24, r24
- 7b2:	99 1f       	adc	r25, r25
- 7b4:	2a 95       	dec	r18
- 7b6:	e2 f7       	brpl	.-8      	; 0x7b0 <M_DIO_Void_SetPinDirection+0x4c>
- 7b8:	80 95       	com	r24
- 7ba:	83 23       	and	r24, r19
- 7bc:	8a bb       	out	0x1a, r24	; 26
- 7be:	08 95       	ret
+ 7ac:	3a b3       	in	r19, 0x1a	; 26
+ 7ae:	81 e0       	ldi	r24, 0x01	; 1
+ 7b0:	90 e0       	ldi	r25, 0x00	; 0
+ 7b2:	02 c0       	rjmp	.+4      	; 0x7b8 <M_DIO_Void_SetPinDirection+0x50>
+ 7b4:	88 0f       	add	r24, r24
+ 7b6:	99 1f       	adc	r25, r25
+ 7b8:	2a 95       	dec	r18
+ 7ba:	e2 f7       	brpl	.-8      	; 0x7b4 <M_DIO_Void_SetPinDirection+0x4c>
+ 7bc:	80 95       	com	r24
+ 7be:	83 23       	and	r24, r19
+ 7c0:	8a bb       	out	0x1a, r24	; 26
+ 7c2:	08 95       	ret
 		case 2: CLR_BIT(DDRB_REG,Local_U8_Bit); break;
- 7c0:	37 b3       	in	r19, 0x17	; 23
- 7c2:	81 e0       	ldi	r24, 0x01	; 1
- 7c4:	90 e0       	ldi	r25, 0x00	; 0
- 7c6:	02 c0       	rjmp	.+4      	; 0x7cc <M_DIO_Void_SetPinDirection+0x68>
- 7c8:	88 0f       	add	r24, r24
- 7ca:	99 1f       	adc	r25, r25
- 7cc:	2a 95       	dec	r18
- 7ce:	e2 f7       	brpl	.-8      	; 0x7c8 <M_DIO_Void_SetPinDirection+0x64>
- 7d0:	80 95       	com	r24
- 7d2:	83 23       	and	r24, r19
- 7d4:	87 bb       	out	0x17, r24	; 23
- 7d6:	08 95       	ret
+ 7c4:	37 b3       	in	r19, 0x17	; 23
+ 7c6:	81 e0       	ldi	r24, 0x01	; 1
+ 7c8:	90 e0       	ldi	r25, 0x00	; 0
+ 7ca:	02 c0       	rjmp	.+4      	; 0x7d0 <M_DIO_Void_SetPinDirection+0x68>
+ 7cc:	88 0f       	add	r24, r24
+ 7ce:	99 1f       	adc	r25, r25
+ 7d0:	2a 95       	dec	r18
+ 7d2:	e2 f7       	brpl	.-8      	; 0x7cc <M_DIO_Void_SetPinDirection+0x64>
+ 7d4:	80 95       	com	r24
+ 7d6:	83 23       	and	r24, r19
+ 7d8:	87 bb       	out	0x17, r24	; 23
+ 7da:	08 95       	ret
 		case 3: CLR_BIT(DDRC_REG,Local_U8_Bit); break;
- 7d8:	34 b3       	in	r19, 0x14	; 20
- 7da:	81 e0       	ldi	r24, 0x01	; 1
- 7dc:	90 e0       	ldi	r25, 0x00	; 0
- 7de:	02 c0       	rjmp	.+4      	; 0x7e4 <M_DIO_Void_SetPinDirection+0x80>
- 7e0:	88 0f       	add	r24, r24
- 7e2:	99 1f       	adc	r25, r25
- 7e4:	2a 95       	dec	r18
- 7e6:	e2 f7       	brpl	.-8      	; 0x7e0 <M_DIO_Void_SetPinDirection+0x7c>
- 7e8:	80 95       	com	r24
- 7ea:	83 23       	and	r24, r19
- 7ec:	84 bb       	out	0x14, r24	; 20
- 7ee:	08 95       	ret
+ 7dc:	34 b3       	in	r19, 0x14	; 20
+ 7de:	81 e0       	ldi	r24, 0x01	; 1
+ 7e0:	90 e0       	ldi	r25, 0x00	; 0
+ 7e2:	02 c0       	rjmp	.+4      	; 0x7e8 <M_DIO_Void_SetPinDirection+0x80>
+ 7e4:	88 0f       	add	r24, r24
+ 7e6:	99 1f       	adc	r25, r25
+ 7e8:	2a 95       	dec	r18
+ 7ea:	e2 f7       	brpl	.-8      	; 0x7e4 <M_DIO_Void_SetPinDirection+0x7c>
+ 7ec:	80 95       	com	r24
+ 7ee:	83 23       	and	r24, r19
+ 7f0:	84 bb       	out	0x14, r24	; 20
+ 7f2:	08 95       	ret
 		case 4: CLR_BIT(DDRD_REG,Local_U8_Bit); break;
- 7f0:	31 b3       	in	r19, 0x11	; 17
- 7f2:	81 e0       	ldi	r24, 0x01	; 1
- 7f4:	90 e0       	ldi	r25, 0x00	; 0
- 7f6:	02 c0       	rjmp	.+4      	; 0x7fc <M_DIO_Void_SetPinDirection+0x98>
- 7f8:	88 0f       	add	r24, r24
- 7fa:	99 1f       	adc	r25, r25
- 7fc:	2a 95       	dec	r18
- 7fe:	e2 f7       	brpl	.-8      	; 0x7f8 <M_DIO_Void_SetPinDirection+0x94>
- 800:	80 95       	com	r24
- 802:	83 23       	and	r24, r19
- 804:	81 bb       	out	0x11, r24	; 17
- 806:	08 95       	ret
+ 7f4:	31 b3       	in	r19, 0x11	; 17
+ 7f6:	81 e0       	ldi	r24, 0x01	; 1
+ 7f8:	90 e0       	ldi	r25, 0x00	; 0
+ 7fa:	02 c0       	rjmp	.+4      	; 0x800 <__DATA_REGION_LENGTH__>
+ 7fc:	88 0f       	add	r24, r24
+ 7fe:	99 1f       	adc	r25, r25
+ 800:	2a 95       	dec	r18
+ 802:	e2 f7       	brpl	.-8      	; 0x7fc <M_DIO_Void_SetPinDirection+0x94>
+ 804:	80 95       	com	r24
+ 806:	83 23       	and	r24, r19
+ 808:	81 bb       	out	0x11, r24	; 17
+ 80a:	08 95       	ret
 		default:                                break;
 		}
 		break;
 		case OUTPUT:
 			switch(Local_U8_Group)
- 808:	92 30       	cpi	r25, 0x02	; 2
- 80a:	a1 f0       	breq	.+40     	; 0x834 <__DATA_REGION_LENGTH__+0x34>
- 80c:	18 f4       	brcc	.+6      	; 0x814 <__DATA_REGION_LENGTH__+0x14>
- 80e:	91 30       	cpi	r25, 0x01	; 1
- 810:	31 f0       	breq	.+12     	; 0x81e <__DATA_REGION_LENGTH__+0x1e>
- 812:	08 95       	ret
- 814:	93 30       	cpi	r25, 0x03	; 3
- 816:	c9 f0       	breq	.+50     	; 0x84a <__DATA_REGION_LENGTH__+0x4a>
- 818:	94 30       	cpi	r25, 0x04	; 4
- 81a:	11 f1       	breq	.+68     	; 0x860 <__stack+0x1>
- 81c:	08 95       	ret
+ 80c:	92 30       	cpi	r25, 0x02	; 2
+ 80e:	a1 f0       	breq	.+40     	; 0x838 <__DATA_REGION_LENGTH__+0x38>
+ 810:	18 f4       	brcc	.+6      	; 0x818 <__DATA_REGION_LENGTH__+0x18>
+ 812:	91 30       	cpi	r25, 0x01	; 1
+ 814:	31 f0       	breq	.+12     	; 0x822 <__DATA_REGION_LENGTH__+0x22>
+ 816:	08 95       	ret
+ 818:	93 30       	cpi	r25, 0x03	; 3
+ 81a:	c9 f0       	breq	.+50     	; 0x84e <__DATA_REGION_LENGTH__+0x4e>
+ 81c:	94 30       	cpi	r25, 0x04	; 4
+ 81e:	11 f1       	breq	.+68     	; 0x864 <__stack+0x5>
+ 820:	08 95       	ret
 			{
 			case 1: SET_BIT(DDRA_REG,Local_U8_Bit); break;
- 81e:	3a b3       	in	r19, 0x1a	; 26
- 820:	81 e0       	ldi	r24, 0x01	; 1
- 822:	90 e0       	ldi	r25, 0x00	; 0
- 824:	02 c0       	rjmp	.+4      	; 0x82a <__DATA_REGION_LENGTH__+0x2a>
- 826:	88 0f       	add	r24, r24
- 828:	99 1f       	adc	r25, r25
- 82a:	2a 95       	dec	r18
- 82c:	e2 f7       	brpl	.-8      	; 0x826 <__DATA_REGION_LENGTH__+0x26>
- 82e:	83 2b       	or	r24, r19
- 830:	8a bb       	out	0x1a, r24	; 26
- 832:	08 95       	ret
+ 822:	3a b3       	in	r19, 0x1a	; 26
+ 824:	81 e0       	ldi	r24, 0x01	; 1
+ 826:	90 e0       	ldi	r25, 0x00	; 0
+ 828:	02 c0       	rjmp	.+4      	; 0x82e <__DATA_REGION_LENGTH__+0x2e>
+ 82a:	88 0f       	add	r24, r24
+ 82c:	99 1f       	adc	r25, r25
+ 82e:	2a 95       	dec	r18
+ 830:	e2 f7       	brpl	.-8      	; 0x82a <__DATA_REGION_LENGTH__+0x2a>
+ 832:	83 2b       	or	r24, r19
+ 834:	8a bb       	out	0x1a, r24	; 26
+ 836:	08 95       	ret
 			case 2: SET_BIT(DDRB_REG,Local_U8_Bit); break;
- 834:	37 b3       	in	r19, 0x17	; 23
- 836:	81 e0       	ldi	r24, 0x01	; 1
- 838:	90 e0       	ldi	r25, 0x00	; 0
- 83a:	02 c0       	rjmp	.+4      	; 0x840 <__DATA_REGION_LENGTH__+0x40>
- 83c:	88 0f       	add	r24, r24
- 83e:	99 1f       	adc	r25, r25
- 840:	2a 95       	dec	r18
- 842:	e2 f7       	brpl	.-8      	; 0x83c <__DATA_REGION_LENGTH__+0x3c>
- 844:	83 2b       	or	r24, r19
- 846:	87 bb       	out	0x17, r24	; 23
- 848:	08 95       	ret
+ 838:	37 b3       	in	r19, 0x17	; 23
+ 83a:	81 e0       	ldi	r24, 0x01	; 1
+ 83c:	90 e0       	ldi	r25, 0x00	; 0
+ 83e:	02 c0       	rjmp	.+4      	; 0x844 <__DATA_REGION_LENGTH__+0x44>
+ 840:	88 0f       	add	r24, r24
+ 842:	99 1f       	adc	r25, r25
+ 844:	2a 95       	dec	r18
+ 846:	e2 f7       	brpl	.-8      	; 0x840 <__DATA_REGION_LENGTH__+0x40>
+ 848:	83 2b       	or	r24, r19
+ 84a:	87 bb       	out	0x17, r24	; 23
+ 84c:	08 95       	ret
 			case 3: SET_BIT(DDRC_REG,Local_U8_Bit); break;
- 84a:	34 b3       	in	r19, 0x14	; 20
- 84c:	81 e0       	ldi	r24, 0x01	; 1
- 84e:	90 e0       	ldi	r25, 0x00	; 0
- 850:	02 c0       	rjmp	.+4      	; 0x856 <__DATA_REGION_LENGTH__+0x56>
- 852:	88 0f       	add	r24, r24
- 854:	99 1f       	adc	r25, r25
- 856:	2a 95       	dec	r18
- 858:	e2 f7       	brpl	.-8      	; 0x852 <__DATA_REGION_LENGTH__+0x52>
- 85a:	83 2b       	or	r24, r19
- 85c:	84 bb       	out	0x14, r24	; 20
- 85e:	08 95       	ret
+ 84e:	34 b3       	in	r19, 0x14	; 20
+ 850:	81 e0       	ldi	r24, 0x01	; 1
+ 852:	90 e0       	ldi	r25, 0x00	; 0
+ 854:	02 c0       	rjmp	.+4      	; 0x85a <__DATA_REGION_LENGTH__+0x5a>
+ 856:	88 0f       	add	r24, r24
+ 858:	99 1f       	adc	r25, r25
+ 85a:	2a 95       	dec	r18
+ 85c:	e2 f7       	brpl	.-8      	; 0x856 <__DATA_REGION_LENGTH__+0x56>
+ 85e:	83 2b       	or	r24, r19
+ 860:	84 bb       	out	0x14, r24	; 20
+ 862:	08 95       	ret
 			case 4: SET_BIT(DDRD_REG,Local_U8_Bit); break;
- 860:	31 b3       	in	r19, 0x11	; 17
- 862:	81 e0       	ldi	r24, 0x01	; 1
- 864:	90 e0       	ldi	r25, 0x00	; 0
- 866:	02 c0       	rjmp	.+4      	; 0x86c <__stack+0xd>
- 868:	88 0f       	add	r24, r24
- 86a:	99 1f       	adc	r25, r25
- 86c:	2a 95       	dec	r18
- 86e:	e2 f7       	brpl	.-8      	; 0x868 <__stack+0x9>
- 870:	83 2b       	or	r24, r19
- 872:	81 bb       	out	0x11, r24	; 17
- 874:	08 95       	ret
+ 864:	31 b3       	in	r19, 0x11	; 17
+ 866:	81 e0       	ldi	r24, 0x01	; 1
+ 868:	90 e0       	ldi	r25, 0x00	; 0
+ 86a:	02 c0       	rjmp	.+4      	; 0x870 <__stack+0x11>
+ 86c:	88 0f       	add	r24, r24
+ 86e:	99 1f       	adc	r25, r25
+ 870:	2a 95       	dec	r18
+ 872:	e2 f7       	brpl	.-8      	; 0x86c <__stack+0xd>
+ 874:	83 2b       	or	r24, r19
+ 876:	81 bb       	out	0x11, r24	; 17
+ 878:	08 95       	ret
 
-00000876 <M_DIO_Void_SetPinValue>:
+0000087a <M_DIO_Void_SetPinValue>:
 /*--------------------------------------------------------------------------------------------*/
 /*   FUNCTION BODY   */
 /*--------------------------------------------------------------------------------------------*/
 void M_DIO_Void_SetPinValue(u8 Copy_U8_Number, u8 Copy_U8_State)
 {
 	u8 Local_U8_Bit    = Copy_U8_Number % 10;
- 876:	9d ec       	ldi	r25, 0xCD	; 205
- 878:	89 9f       	mul	r24, r25
- 87a:	91 2d       	mov	r25, r1
- 87c:	11 24       	eor	r1, r1
- 87e:	29 2f       	mov	r18, r25
- 880:	26 95       	lsr	r18
- 882:	26 95       	lsr	r18
+ 87a:	9d ec       	ldi	r25, 0xCD	; 205
+ 87c:	89 9f       	mul	r24, r25
+ 87e:	91 2d       	mov	r25, r1
+ 880:	11 24       	eor	r1, r1
+ 882:	29 2f       	mov	r18, r25
  884:	26 95       	lsr	r18
- 886:	22 0f       	add	r18, r18
- 888:	32 2f       	mov	r19, r18
- 88a:	33 0f       	add	r19, r19
- 88c:	33 0f       	add	r19, r19
- 88e:	23 0f       	add	r18, r19
- 890:	82 1b       	sub	r24, r18
- 892:	28 2f       	mov	r18, r24
+ 886:	26 95       	lsr	r18
+ 888:	26 95       	lsr	r18
+ 88a:	22 0f       	add	r18, r18
+ 88c:	32 2f       	mov	r19, r18
+ 88e:	33 0f       	add	r19, r19
+ 890:	33 0f       	add	r19, r19
+ 892:	23 0f       	add	r18, r19
+ 894:	82 1b       	sub	r24, r18
+ 896:	28 2f       	mov	r18, r24
 	u8 Local_U8_Group  = Copy_U8_Number / 10;
- 894:	96 95       	lsr	r25
- 896:	96 95       	lsr	r25
  898:	96 95       	lsr	r25
+ 89a:	96 95       	lsr	r25
+ 89c:	96 95       	lsr	r25
 	switch(Copy_U8_State)
- 89a:	66 23       	and	r22, r22
- 89c:	19 f0       	breq	.+6      	; 0x8a4 <M_DIO_Void_SetPinValue+0x2e>
- 89e:	61 30       	cpi	r22, 0x01	; 1
- 8a0:	e1 f1       	breq	.+120    	; 0x91a <M_DIO_Void_SetPinValue+0xa4>
- 8a2:	08 95       	ret
+ 89e:	66 23       	and	r22, r22
+ 8a0:	19 f0       	breq	.+6      	; 0x8a8 <M_DIO_Void_SetPinValue+0x2e>
+ 8a2:	61 30       	cpi	r22, 0x01	; 1
+ 8a4:	e1 f1       	breq	.+120    	; 0x91e <M_DIO_Void_SetPinValue+0xa4>
+ 8a6:	08 95       	ret
 	{
 	case LOW:
 		switch(Local_U8_Group)
- 8a4:	92 30       	cpi	r25, 0x02	; 2
- 8a6:	a9 f0       	breq	.+42     	; 0x8d2 <M_DIO_Void_SetPinValue+0x5c>
- 8a8:	18 f4       	brcc	.+6      	; 0x8b0 <M_DIO_Void_SetPinValue+0x3a>
- 8aa:	91 30       	cpi	r25, 0x01	; 1
- 8ac:	31 f0       	breq	.+12     	; 0x8ba <M_DIO_Void_SetPinValue+0x44>
- 8ae:	08 95       	ret
- 8b0:	93 30       	cpi	r25, 0x03	; 3
- 8b2:	d9 f0       	breq	.+54     	; 0x8ea <M_DIO_Void_SetPinValue+0x74>
- 8b4:	94 30       	cpi	r25, 0x04	; 4
- 8b6:	29 f1       	breq	.+74     	; 0x902 <M_DIO_Void_SetPinValue+0x8c>
- 8b8:	08 95       	ret
+ 8a8:	92 30       	cpi	r25, 0x02	; 2
+ 8aa:	a9 f0       	breq	.+42     	; 0x8d6 <M_DIO_Void_SetPinValue+0x5c>
+ 8ac:	18 f4       	brcc	.+6      	; 0x8b4 <M_DIO_Void_SetPinValue+0x3a>
+ 8ae:	91 30       	cpi	r25, 0x01	; 1
+ 8b0:	31 f0       	breq	.+12     	; 0x8be <M_DIO_Void_SetPinValue+0x44>
+ 8b2:	08 95       	ret
+ 8b4:	93 30       	cpi	r25, 0x03	; 3
+ 8b6:	d9 f0       	breq	.+54     	; 0x8ee <M_DIO_Void_SetPinValue+0x74>
+ 8b8:	94 30       	cpi	r25, 0x04	; 4
+ 8ba:	29 f1       	breq	.+74     	; 0x906 <M_DIO_Void_SetPinValue+0x8c>
+ 8bc:	08 95       	ret
 		{
 		case 1: CLR_BIT(PORTA_REG,Local_U8_Bit); break;
- 8ba:	3b b3       	in	r19, 0x1b	; 27
- 8bc:	81 e0       	ldi	r24, 0x01	; 1
- 8be:	90 e0       	ldi	r25, 0x00	; 0
- 8c0:	02 c0       	rjmp	.+4      	; 0x8c6 <M_DIO_Void_SetPinValue+0x50>
- 8c2:	88 0f       	add	r24, r24
- 8c4:	99 1f       	adc	r25, r25
- 8c6:	2a 95       	dec	r18
- 8c8:	e2 f7       	brpl	.-8      	; 0x8c2 <M_DIO_Void_SetPinValue+0x4c>
- 8ca:	80 95       	com	r24
- 8cc:	83 23       	and	r24, r19
- 8ce:	8b bb       	out	0x1b, r24	; 27
- 8d0:	08 95       	ret
+ 8be:	3b b3       	in	r19, 0x1b	; 27
+ 8c0:	81 e0       	ldi	r24, 0x01	; 1
+ 8c2:	90 e0       	ldi	r25, 0x00	; 0
+ 8c4:	02 c0       	rjmp	.+4      	; 0x8ca <M_DIO_Void_SetPinValue+0x50>
+ 8c6:	88 0f       	add	r24, r24
+ 8c8:	99 1f       	adc	r25, r25
+ 8ca:	2a 95       	dec	r18
+ 8cc:	e2 f7       	brpl	.-8      	; 0x8c6 <M_DIO_Void_SetPinValue+0x4c>
+ 8ce:	80 95       	com	r24
+ 8d0:	83 23       	and	r24, r19
+ 8d2:	8b bb       	out	0x1b, r24	; 27
+ 8d4:	08 95       	ret
 		case 2: CLR_BIT(PORTB_REG,Local_U8_Bit); break;
- 8d2:	38 b3       	in	r19, 0x18	; 24
- 8d4:	81 e0       	ldi	r24, 0x01	; 1
- 8d6:	90 e0       	ldi	r25, 0x00	; 0
- 8d8:	02 c0       	rjmp	.+4      	; 0x8de <M_DIO_Void_SetPinValue+0x68>
- 8da:	88 0f       	add	r24, r24
- 8dc:	99 1f       	adc	r25, r25
- 8de:	2a 95       	dec	r18
- 8e0:	e2 f7       	brpl	.-8      	; 0x8da <M_DIO_Void_SetPinValue+0x64>
- 8e2:	80 95       	com	r24
- 8e4:	83 23       	and	r24, r19
- 8e6:	88 bb       	out	0x18, r24	; 24
- 8e8:	08 95       	ret
+ 8d6:	38 b3       	in	r19, 0x18	; 24
+ 8d8:	81 e0       	ldi	r24, 0x01	; 1
+ 8da:	90 e0       	ldi	r25, 0x00	; 0
+ 8dc:	02 c0       	rjmp	.+4      	; 0x8e2 <M_DIO_Void_SetPinValue+0x68>
+ 8de:	88 0f       	add	r24, r24
+ 8e0:	99 1f       	adc	r25, r25
+ 8e2:	2a 95       	dec	r18
+ 8e4:	e2 f7       	brpl	.-8      	; 0x8de <M_DIO_Void_SetPinValue+0x64>
+ 8e6:	80 95       	com	r24
+ 8e8:	83 23       	and	r24, r19
+ 8ea:	88 bb       	out	0x18, r24	; 24
+ 8ec:	08 95       	ret
 		case 3: CLR_BIT(PORTC_REG,Local_U8_Bit); break;
- 8ea:	35 b3       	in	r19, 0x15	; 21
- 8ec:	81 e0       	ldi	r24, 0x01	; 1
- 8ee:	90 e0       	ldi	r25, 0x00	; 0
- 8f0:	02 c0       	rjmp	.+4      	; 0x8f6 <M_DIO_Void_SetPinValue+0x80>
- 8f2:	88 0f       	add	r24, r24
- 8f4:	99 1f       	adc	r25, r25
- 8f6:	2a 95       	dec	r18
- 8f8:	e2 f7       	brpl	.-8      	; 0x8f2 <M_DIO_Void_SetPinValue+0x7c>
- 8fa:	80 95       	com	r24
- 8fc:	83 23       	and	r24, r19
- 8fe:	85 bb       	out	0x15, r24	; 21
- 900:	08 95       	ret
+ 8ee:	35 b3       	in	r19, 0x15	; 21
+ 8f0:	81 e0       	ldi	r24, 0x01	; 1
+ 8f2:	90 e0       	ldi	r25, 0x00	; 0
+ 8f4:	02 c0       	rjmp	.+4      	; 0x8fa <M_DIO_Void_SetPinValue+0x80>
+ 8f6:	88 0f       	add	r24, r24
+ 8f8:	99 1f       	adc	r25, r25
+ 8fa:	2a 95       	dec	r18
+ 8fc:	e2 f7       	brpl	.-8      	; 0x8f6 <M_DIO_Void_SetPinValue+0x7c>
+ 8fe:	80 95       	com	r24
+ 900:	83 23       	and	r24, r19
+ 902:	85 bb       	out	0x15, r24	; 21
+ 904:	08 95       	ret
 		case 4: CLR_BIT(PORTD_REG,Local_U8_Bit); break;
- 902:	32 b3       	in	r19, 0x12	; 18
- 904:	81 e0       	ldi	r24, 0x01	; 1
- 906:	90 e0       	ldi	r25, 0x00	; 0
- 908:	02 c0       	rjmp	.+4      	; 0x90e <M_DIO_Void_SetPinValue+0x98>
- 90a:	88 0f       	add	r24, r24
- 90c:	99 1f       	adc	r25, r25
- 90e:	2a 95       	dec	r18
- 910:	e2 f7       	brpl	.-8      	; 0x90a <M_DIO_Void_SetPinValue+0x94>
- 912:	80 95       	com	r24
- 914:	83 23       	and	r24, r19
- 916:	82 bb       	out	0x12, r24	; 18
- 918:	08 95       	ret
+ 906:	32 b3       	in	r19, 0x12	; 18
+ 908:	81 e0       	ldi	r24, 0x01	; 1
+ 90a:	90 e0       	ldi	r25, 0x00	; 0
+ 90c:	02 c0       	rjmp	.+4      	; 0x912 <M_DIO_Void_SetPinValue+0x98>
+ 90e:	88 0f       	add	r24, r24
+ 910:	99 1f       	adc	r25, r25
+ 912:	2a 95       	dec	r18
+ 914:	e2 f7       	brpl	.-8      	; 0x90e <M_DIO_Void_SetPinValue+0x94>
+ 916:	80 95       	com	r24
+ 918:	83 23       	and	r24, r19
+ 91a:	82 bb       	out	0x12, r24	; 18
+ 91c:	08 95       	ret
 		default:                                 break;
 		}
 		break;
 		case HIGH:
 			switch(Local_U8_Group)
- 91a:	92 30       	cpi	r25, 0x02	; 2
- 91c:	a1 f0       	breq	.+40     	; 0x946 <M_DIO_Void_SetPinValue+0xd0>
- 91e:	18 f4       	brcc	.+6      	; 0x926 <M_DIO_Void_SetPinValue+0xb0>
- 920:	91 30       	cpi	r25, 0x01	; 1
- 922:	31 f0       	breq	.+12     	; 0x930 <M_DIO_Void_SetPinValue+0xba>
- 924:	08 95       	ret
- 926:	93 30       	cpi	r25, 0x03	; 3
- 928:	c9 f0       	breq	.+50     	; 0x95c <M_DIO_Void_SetPinValue+0xe6>
- 92a:	94 30       	cpi	r25, 0x04	; 4
- 92c:	11 f1       	breq	.+68     	; 0x972 <M_DIO_Void_SetPinValue+0xfc>
- 92e:	08 95       	ret
+ 91e:	92 30       	cpi	r25, 0x02	; 2
+ 920:	a1 f0       	breq	.+40     	; 0x94a <M_DIO_Void_SetPinValue+0xd0>
+ 922:	18 f4       	brcc	.+6      	; 0x92a <M_DIO_Void_SetPinValue+0xb0>
+ 924:	91 30       	cpi	r25, 0x01	; 1
+ 926:	31 f0       	breq	.+12     	; 0x934 <M_DIO_Void_SetPinValue+0xba>
+ 928:	08 95       	ret
+ 92a:	93 30       	cpi	r25, 0x03	; 3
+ 92c:	c9 f0       	breq	.+50     	; 0x960 <M_DIO_Void_SetPinValue+0xe6>
+ 92e:	94 30       	cpi	r25, 0x04	; 4
+ 930:	11 f1       	breq	.+68     	; 0x976 <M_DIO_Void_SetPinValue+0xfc>
+ 932:	08 95       	ret
 			{
 			case 1: SET_BIT(PORTA_REG,Local_U8_Bit); break;
- 930:	3b b3       	in	r19, 0x1b	; 27
- 932:	81 e0       	ldi	r24, 0x01	; 1
- 934:	90 e0       	ldi	r25, 0x00	; 0
- 936:	02 c0       	rjmp	.+4      	; 0x93c <M_DIO_Void_SetPinValue+0xc6>
- 938:	88 0f       	add	r24, r24
- 93a:	99 1f       	adc	r25, r25
- 93c:	2a 95       	dec	r18
- 93e:	e2 f7       	brpl	.-8      	; 0x938 <M_DIO_Void_SetPinValue+0xc2>
- 940:	83 2b       	or	r24, r19
- 942:	8b bb       	out	0x1b, r24	; 27
- 944:	08 95       	ret
+ 934:	3b b3       	in	r19, 0x1b	; 27
+ 936:	81 e0       	ldi	r24, 0x01	; 1
+ 938:	90 e0       	ldi	r25, 0x00	; 0
+ 93a:	02 c0       	rjmp	.+4      	; 0x940 <M_DIO_Void_SetPinValue+0xc6>
+ 93c:	88 0f       	add	r24, r24
+ 93e:	99 1f       	adc	r25, r25
+ 940:	2a 95       	dec	r18
+ 942:	e2 f7       	brpl	.-8      	; 0x93c <M_DIO_Void_SetPinValue+0xc2>
+ 944:	83 2b       	or	r24, r19
+ 946:	8b bb       	out	0x1b, r24	; 27
+ 948:	08 95       	ret
 			case 2: SET_BIT(PORTB_REG,Local_U8_Bit); break;
- 946:	38 b3       	in	r19, 0x18	; 24
- 948:	81 e0       	ldi	r24, 0x01	; 1
- 94a:	90 e0       	ldi	r25, 0x00	; 0
- 94c:	02 c0       	rjmp	.+4      	; 0x952 <M_DIO_Void_SetPinValue+0xdc>
- 94e:	88 0f       	add	r24, r24
- 950:	99 1f       	adc	r25, r25
- 952:	2a 95       	dec	r18
- 954:	e2 f7       	brpl	.-8      	; 0x94e <M_DIO_Void_SetPinValue+0xd8>
- 956:	83 2b       	or	r24, r19
- 958:	88 bb       	out	0x18, r24	; 24
- 95a:	08 95       	ret
+ 94a:	38 b3       	in	r19, 0x18	; 24
+ 94c:	81 e0       	ldi	r24, 0x01	; 1
+ 94e:	90 e0       	ldi	r25, 0x00	; 0
+ 950:	02 c0       	rjmp	.+4      	; 0x956 <M_DIO_Void_SetPinValue+0xdc>
+ 952:	88 0f       	add	r24, r24
+ 954:	99 1f       	adc	r25, r25
+ 956:	2a 95       	dec	r18
+ 958:	e2 f7       	brpl	.-8      	; 0x952 <M_DIO_Void_SetPinValue+0xd8>
+ 95a:	83 2b       	or	r24, r19
+ 95c:	88 bb       	out	0x18, r24	; 24
+ 95e:	08 95       	ret
 			case 3: SET_BIT(PORTC_REG,Local_U8_Bit); break;
- 95c:	35 b3       	in	r19, 0x15	; 21
- 95e:	81 e0       	ldi	r24, 0x01	; 1
- 960:	90 e0       	ldi	r25, 0x00	; 0
- 962:	02 c0       	rjmp	.+4      	; 0x968 <M_DIO_Void_SetPinValue+0xf2>
- 964:	88 0f       	add	r24, r24
- 966:	99 1f       	adc	r25, r25
- 968:	2a 95       	dec	r18
- 96a:	e2 f7       	brpl	.-8      	; 0x964 <M_DIO_Void_SetPinValue+0xee>
- 96c:	83 2b       	or	r24, r19
- 96e:	85 bb       	out	0x15, r24	; 21
- 970:	08 95       	ret
+ 960:	35 b3       	in	r19, 0x15	; 21
+ 962:	81 e0       	ldi	r24, 0x01	; 1
+ 964:	90 e0       	ldi	r25, 0x00	; 0
+ 966:	02 c0       	rjmp	.+4      	; 0x96c <M_DIO_Void_SetPinValue+0xf2>
+ 968:	88 0f       	add	r24, r24
+ 96a:	99 1f       	adc	r25, r25
+ 96c:	2a 95       	dec	r18
+ 96e:	e2 f7       	brpl	.-8      	; 0x968 <M_DIO_Void_SetPinValue+0xee>
+ 970:	83 2b       	or	r24, r19
+ 972:	85 bb       	out	0x15, r24	; 21
+ 974:	08 95       	ret
 			case 4: SET_BIT(PORTD_REG,Local_U8_Bit); break;
- 972:	32 b3       	in	r19, 0x12	; 18
- 974:	81 e0       	ldi	r24, 0x01	; 1
- 976:	90 e0       	ldi	r25, 0x00	; 0
- 978:	02 c0       	rjmp	.+4      	; 0x97e <M_DIO_Void_SetPinValue+0x108>
- 97a:	88 0f       	add	r24, r24
- 97c:	99 1f       	adc	r25, r25
- 97e:	2a 95       	dec	r18
- 980:	e2 f7       	brpl	.-8      	; 0x97a <M_DIO_Void_SetPinValue+0x104>
- 982:	83 2b       	or	r24, r19
- 984:	82 bb       	out	0x12, r24	; 18
- 986:	08 95       	ret
+ 976:	32 b3       	in	r19, 0x12	; 18
+ 978:	81 e0       	ldi	r24, 0x01	; 1
+ 97a:	90 e0       	ldi	r25, 0x00	; 0
+ 97c:	02 c0       	rjmp	.+4      	; 0x982 <M_DIO_Void_SetPinValue+0x108>
+ 97e:	88 0f       	add	r24, r24
+ 980:	99 1f       	adc	r25, r25
+ 982:	2a 95       	dec	r18
+ 984:	e2 f7       	brpl	.-8      	; 0x97e <M_DIO_Void_SetPinValue+0x104>
+ 986:	83 2b       	or	r24, r19
+ 988:	82 bb       	out	0x12, r24	; 18
+ 98a:	08 95       	ret
 
-00000988 <UART_Init>:
+0000098c <UART_Init>:
 /*THIS FUNCTION IS TO READ BYTE USING POLLING*/ 
 	while (!GET_BIT(UCSRA,RXC)){
 		/*WAIT UNTIL THE RECIEVER FLAG IS ONE*/
 	}
 	return (UDR);
 }
- 988:	80 b5       	in	r24, 0x20	; 32
- 98a:	8f 77       	andi	r24, 0x7F	; 127
- 98c:	80 bd       	out	0x20, r24	; 32
- 98e:	10 bc       	out	0x20, r1	; 32
- 990:	80 e1       	ldi	r24, 0x10	; 16
- 992:	89 b9       	out	0x09, r24	; 9
- 994:	80 b5       	in	r24, 0x20	; 32
- 996:	80 bd       	out	0x20, r24	; 32
- 998:	88 e9       	ldi	r24, 0x98	; 152
- 99a:	8a b9       	out	0x0a, r24	; 10
- 99c:	80 b5       	in	r24, 0x20	; 32
- 99e:	80 68       	ori	r24, 0x80	; 128
- 9a0:	80 bd       	out	0x20, r24	; 32
- 9a2:	86 e8       	ldi	r24, 0x86	; 134
+ 98c:	80 b5       	in	r24, 0x20	; 32
+ 98e:	8f 77       	andi	r24, 0x7F	; 127
+ 990:	80 bd       	out	0x20, r24	; 32
+ 992:	10 bc       	out	0x20, r1	; 32
+ 994:	80 e1       	ldi	r24, 0x10	; 16
+ 996:	89 b9       	out	0x09, r24	; 9
+ 998:	80 b5       	in	r24, 0x20	; 32
+ 99a:	80 bd       	out	0x20, r24	; 32
+ 99c:	88 e9       	ldi	r24, 0x98	; 152
+ 99e:	8a b9       	out	0x0a, r24	; 10
+ 9a0:	80 b5       	in	r24, 0x20	; 32
+ 9a2:	80 68       	ori	r24, 0x80	; 128
  9a4:	80 bd       	out	0x20, r24	; 32
- 9a6:	08 95       	ret
+ 9a6:	86 e8       	ldi	r24, 0x86	; 134
+ 9a8:	80 bd       	out	0x20, r24	; 32
+ 9aa:	08 95       	ret
 
-000009a8 <UART_sendByte>:
- 9a8:	5d 9b       	sbis	0x0b, 5	; 11
- 9aa:	fe cf       	rjmp	.-4      	; 0x9a8 <UART_sendByte>
- 9ac:	8c b9       	out	0x0c, r24	; 12
- 9ae:	5e 9b       	sbis	0x0b, 6	; 11
- 9b0:	fe cf       	rjmp	.-4      	; 0x9ae <UART_sendByte+0x6>
- 9b2:	08 95       	ret
+000009ac <UART_sendByte>:
+ 9ac:	5d 9b       	sbis	0x0b, 5	; 11
+ 9ae:	fe cf       	rjmp	.-4      	; 0x9ac <UART_sendByte>
+ 9b0:	8c b9       	out	0x0c, r24	; 12
+ 9b2:	5e 9b       	sbis	0x0b, 6	; 11
+ 9b4:	fe cf       	rjmp	.-4      	; 0x9b2 <UART_sendByte+0x6>
+ 9b6:	08 95       	ret
 
-000009b4 <UART_receiveByteAsynchCallBack>:
+000009b8 <UART_receiveByteAsynchCallBack>:
 void UART_receiveByteAsynchCallBack(void(*CpyPtr)(u8)){
 	ptr_func = CpyPtr; 
- 9b4:	90 93 b4 00 	sts	0x00B4, r25	; 0x8000b4 <ptr_func+0x1>
- 9b8:	80 93 b3 00 	sts	0x00B3, r24	; 0x8000b3 <ptr_func>
- 9bc:	08 95       	ret
+ 9b8:	90 93 b4 00 	sts	0x00B4, r25	; 0x8000b4 <ptr_func+0x1>
+ 9bc:	80 93 b3 00 	sts	0x00B3, r24	; 0x8000b3 <ptr_func>
+ 9c0:	08 95       	ret
 
-000009be <__vector_13>:
+000009c2 <__vector_13>:
 } 
 ISR(USART_RXC_vect){
- 9be:	1f 92       	push	r1
- 9c0:	0f 92       	push	r0
- 9c2:	0f b6       	in	r0, 0x3f	; 63
+ 9c2:	1f 92       	push	r1
  9c4:	0f 92       	push	r0
- 9c6:	11 24       	eor	r1, r1
- 9c8:	2f 93       	push	r18
- 9ca:	3f 93       	push	r19
- 9cc:	4f 93       	push	r20
- 9ce:	5f 93       	push	r21
- 9d0:	6f 93       	push	r22
- 9d2:	7f 93       	push	r23
- 9d4:	8f 93       	push	r24
- 9d6:	9f 93       	push	r25
- 9d8:	af 93       	push	r26
- 9da:	bf 93       	push	r27
- 9dc:	ef 93       	push	r30
- 9de:	ff 93       	push	r31
+ 9c6:	0f b6       	in	r0, 0x3f	; 63
+ 9c8:	0f 92       	push	r0
+ 9ca:	11 24       	eor	r1, r1
+ 9cc:	2f 93       	push	r18
+ 9ce:	3f 93       	push	r19
+ 9d0:	4f 93       	push	r20
+ 9d2:	5f 93       	push	r21
+ 9d4:	6f 93       	push	r22
+ 9d6:	7f 93       	push	r23
+ 9d8:	8f 93       	push	r24
+ 9da:	9f 93       	push	r25
+ 9dc:	af 93       	push	r26
+ 9de:	bf 93       	push	r27
+ 9e0:	ef 93       	push	r30
+ 9e2:	ff 93       	push	r31
 	ptr_func(UDR);
- 9e0:	8c b1       	in	r24, 0x0c	; 12
- 9e2:	e0 91 b3 00 	lds	r30, 0x00B3	; 0x8000b3 <ptr_func>
- 9e6:	f0 91 b4 00 	lds	r31, 0x00B4	; 0x8000b4 <ptr_func+0x1>
- 9ea:	09 95       	icall
+ 9e4:	8c b1       	in	r24, 0x0c	; 12
+ 9e6:	e0 91 b3 00 	lds	r30, 0x00B3	; 0x8000b3 <ptr_func>
+ 9ea:	f0 91 b4 00 	lds	r31, 0x00B4	; 0x8000b4 <ptr_func+0x1>
+ 9ee:	09 95       	icall
 }
- 9ec:	ff 91       	pop	r31
- 9ee:	ef 91       	pop	r30
- 9f0:	bf 91       	pop	r27
- 9f2:	af 91       	pop	r26
- 9f4:	9f 91       	pop	r25
- 9f6:	8f 91       	pop	r24
- 9f8:	7f 91       	pop	r23
- 9fa:	6f 91       	pop	r22
- 9fc:	5f 91       	pop	r21
- 9fe:	4f 91       	pop	r20
- a00:	3f 91       	pop	r19
- a02:	2f 91       	pop	r18
- a04:	0f 90       	pop	r0
- a06:	0f be       	out	0x3f, r0	; 63
+ 9f0:	ff 91       	pop	r31
+ 9f2:	ef 91       	pop	r30
+ 9f4:	bf 91       	pop	r27
+ 9f6:	af 91       	pop	r26
+ 9f8:	9f 91       	pop	r25
+ 9fa:	8f 91       	pop	r24
+ 9fc:	7f 91       	pop	r23
+ 9fe:	6f 91       	pop	r22
+ a00:	5f 91       	pop	r21
+ a02:	4f 91       	pop	r20
+ a04:	3f 91       	pop	r19
+ a06:	2f 91       	pop	r18
  a08:	0f 90       	pop	r0
- a0a:	1f 90       	pop	r1
- a0c:	18 95       	reti
+ a0a:	0f be       	out	0x3f, r0	; 63
+ a0c:	0f 90       	pop	r0
+ a0e:	1f 90       	pop	r1
+ a10:	18 95       	reti
 
-00000a0e <_exit>:
- a0e:	f8 94       	cli
+00000a12 <_exit>:
+ a12:	f8 94       	cli
 
-00000a10 <__stop_program>:
- a10:	ff cf       	rjmp	.-2      	; 0xa10 <__stop_program>
+00000a14 <__stop_program>:
+ a14:	ff cf       	rjmp	.-2      	; 0xa14 <__stop_program>

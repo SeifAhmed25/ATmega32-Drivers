@@ -15,6 +15,7 @@ int main(void)
 	H_Lcd_Void_LCDInit();
 	UART_Init(); 
 	UART_receiveByteAsynchCallBack(StoreAckBytes);   
+	u8 FingerPrintAddress = 10;  
 	sei ();
 	/*******************************************		Starting with an AURA Wink (;				********************/
 	FingerPS_AuraLedConfig(); 
@@ -22,14 +23,14 @@ int main(void)
 	H_Lcd_Void_LCDWriteString((u8*)"PUT  FINGER TO SCAN");
 	_delay_ms(4000); /*Delay to get the finger scan*/ 
 	/******************************************		Here we are Setting a New Finger Print		********************/ 
-	FingerPS_SetNewFingerPrint (0x0004); 
+	FingerPS_SetNewFingerPrint (FingerPrintAddress); 
 	H_Lcd_Void_LCDClear(); 
 	H_Lcd_Void_LCDWriteString((u8*)"NEW FINGER SAVED");
 	_delay_ms(3000); 
 	/******************************************		Check a One to One Match					********************/ 
 	H_Lcd_Void_LCDClear(); 
 	H_Lcd_Void_LCDWriteString((u8*)"PUT FING TO CH MATCH");
-	if (FingerPS_CheckOneToOneMatch(0x0004) == MATCHED){ 
+	if (FingerPS_CheckOneToOneMatch(FingerPrintAddress) == MATCHED){ 
 			H_Lcd_Void_LCDClear();
 			H_Lcd_Void_LCDWriteString((u8*)"MATCHED"); 
 		}
