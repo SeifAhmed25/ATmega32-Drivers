@@ -4,8 +4,8 @@
  * Created: 3/25/2024 10:02:05 PM
  *  Author: seif
  */ 
-#include "../Inc/I2C_Private.h"
-#include "../Inc/I2C_Interface.h" 
+#include "Inc/I2C_Private.h"
+#include "Inc/I2C_Interface.h" 
 #define F_CPU 16000000UL 
 #define SCL_CLK 200000 /*Select SCL_CLK in Hz*/
 #define BITRATE(TWSR_REG)	((F_CPU/SCL_CLK)-16)/(2 * (1 << (TWSR_REG*2)))

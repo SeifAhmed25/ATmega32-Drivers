@@ -7,6 +7,7 @@
 
 #ifndef UART_CONFIG_H_
 #define UART_CONFIG_H_
+#define F_CPU 16000000UL
 /*******DEFINING BAUD RATE	 ********/ 
 #define BAUDRATE 9600
 /*******CLK SOURCE MHZ_8 OR MHZ_16***/ 
